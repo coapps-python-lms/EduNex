@@ -50,10 +50,14 @@ class CourseList(generics.ListCreateAPIView):
             if 'result' in self.request.GET:
                 limit=int(self.request.GET['result'])
                 qs=models.Course.objects.all().order_by('-id')[:limit]
-            return qs
             if 'category' in self.request.GET:
                 category=self.request.GET['category']
                 qs=models.Course.objects.filter(techs__icontains=category)
+            if 'skill_name' in self.request.GET and 'teacher' in self.request.GET:
+                skill_name=self.request.GET['skill_name']
+                teacher=self.request.GET['teacher']
+                teacher=models.Teacher.objects.filter(id=teacher).first()
+                qs=models.Course.objects.filter(techs__icontains=skill_name,teacher=teacher)
             return qs
 
 def create_course(request):
@@ -84,7 +88,7 @@ class ChapterList(generics.ListCreateAPIView):
     # permission_classes=[permissions.IsAuthenticated]
 
 # course chapter
-class CourseChapterList(generics.ListAPIView):
+class CourseChapterList(generics.ListCreateAPIView):
     serializer_class = ChapterSerializer
     # permission_classes=[permissions.IsAuthenticated]
     def get_queryset(self):

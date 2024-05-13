@@ -12,6 +12,12 @@ class Teacher(models.Model):
     skills= models.TextField()
     class Meta:
         verbose_name_plural= "1. Teachers"
+    def skill_list(self):
+        if self.skills is not None:
+            skill_list = self.skills.split(',')
+            return skill_list
+        else:
+            return "[]"
 
 #  courseCategory model
 class CourseCategory(models.Model):
@@ -35,7 +41,7 @@ class Course(models.Model):
 
     def related_videos(self):
         if self.techs is not None:
-            related_videos = Course.objects.filter(techs__icontains=self.techs)
+            related_videos = Course.objects.filter(techs__icontains=self.techs).exclude(id=self.id)
             return serializers.serialize('json', related_videos)
         else:
             return "[]"
@@ -45,7 +51,7 @@ class Course(models.Model):
             tech_list = self.techs.split(',')
             return tech_list
         else:
-            return []
+            return "[]"
 
 
 # chapter model
