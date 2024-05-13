@@ -21,3 +21,9 @@ class ChapterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Chapter
         fields = '__all__'
+# student
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Student
+        fields=['id','full_name','email','username','password','interested_categories']
+        
