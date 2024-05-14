@@ -37,6 +37,7 @@ function TeacherCourses() {
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Rating</th>
                     <th>Image</th>
                     <th>Enrolled Students</th>
                     <th>Action</th>
@@ -46,6 +47,11 @@ function TeacherCourses() {
                   {courseData.map((course, index) => (
                     <tr>
                       <td><Link to={`/all-chapters/${course.id}`}>{course.title}</Link></td>
+                      <td>{course.course_rating&& 
+                        <span>{course.course_rating}/5</span>}
+                        {!course.course_rating&& 
+                        <span>0/5</span>}
+                        </td>
                       <td>
                         <img
                           src={course.featured_img}
