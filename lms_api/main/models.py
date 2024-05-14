@@ -52,6 +52,10 @@ class Course(models.Model):
             return tech_list
         else:
             return "[]"
+    def total_enrolled_students(self):
+        total_enrolled_students=StudentCourseEnrollement.objects.filter(course=self).count()
+        return total_enrolled_students
+
     def __str__(self):
         return self.title
 
