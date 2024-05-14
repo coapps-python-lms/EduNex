@@ -34,7 +34,7 @@ function EnrolledStudents() {
         </aside>
         <section className="col-md-9">
           <div className="card">
-            <h5 className="card-header">Emrolled Student List</h5>
+            <h5 className="card-header">Enrolled Student List</h5>
             <div className="card-body">
               <table className="table table-bordered">
                 <thead>
