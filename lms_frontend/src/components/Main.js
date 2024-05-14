@@ -34,6 +34,7 @@ import PopularTeachers from "./PopularTeachers";
 import CategoryCourses from "./CategoryCourses";
 import EditCourse from "./Teacher/EditCourse";
 import TeacherSkillCourses from "./TeacherSkillCourses";
+import StudentLogout from "./User/Logout";
 
 function Main() {
   return (
@@ -44,9 +45,10 @@ function Main() {
         <Route path="/about" element={<About />}></Route>
         <Route path="/detail/:course_id" element={<CourseDetail />}></Route>
         <Route path="/teacher-details/:teacher_id" element={<TeacherDetails/>}></Route>
-        <Route path="/user-login" element={<Login />}></Route>
-        <Route path="/user-register" element={<Register />}></Route>
-        <Route path="/user-dashboard" element={<Dashboard />}></Route>
+        <Route path="/student-login" element={<Login />}></Route>
+        <Route path="/student-register" element={<Register />}></Route>
+        <Route path="/student-dashboard" element={<Dashboard />}></Route>
+        <Route path="/student-logout" element={<StudentLogout/>}></Route>
         <Route path="/my-courses" element={<MyCourses />}></Route>
         <Route path="/favorite-courses" element={<FavoriteCourses />}></Route>
         <Route path="/recommended-courses" element={<RecommendedCourses />}></Route>

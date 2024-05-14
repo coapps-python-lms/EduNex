@@ -124,3 +124,21 @@ class StudentList(generics.ListCreateAPIView):
     queryset = models.Student.objects.all()
     serializer_class = StudentSerializer
     # permission_classes=[permissions.IsAuthenticated]
+
+# student login
+@csrf_exempt 
+def student_login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        try:
+            studentData = models.Student.objects.get(email=email, password=password)
+            return JsonResponse({'bool': True,'student_id':studentData.id})
+        except ObjectDoesNotExist:
+            return JsonResponse({'bool': False, 'error': 'Student not found with the provided credentials'})
+        except models.Student.MultipleObjectsReturned:
+            return JsonResponse({'bool': False, 'error': 'Multiple teachers found with the provided credentials'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed for student login'})
+

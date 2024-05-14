@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 function Header() {
   const teacherLoginStatus= localStorage.getItem('teacherLoginStatus')
+  const studentLoginStatus= localStorage.getItem('studentLoginStatus')
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -50,16 +51,19 @@ function Header() {
             User
           </a>
           <ul className = "dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><Link className="dropdown-item" to="/user-login">
+          {studentLoginStatus!=='true' && <>
+              <li><Link className="dropdown-item" to="/student-login">
                Login
             </Link></li>
-            <li><Link className="dropdown-item" to="/user-register">
+            <li><Link className="dropdown-item" to="/student-register">
                Register
-            </Link></li>
+
+            </Link></li></>}
             <li><hr className = "dropdown-divider" /></li>
-            <li><Link className = "dropdown-item" to="/user-dashboard">Dashboard</Link></li>
-            <li><Link className = "dropdown-item" to="/user-logout ">Logout</Link></li>
-          </ul>
+            
+            <li><Link className = "dropdown-item" to="/student-dashboard">Dashboard</Link></li>
+            <li><Link className = "dropdown-item" to="/student-logout ">Logout</Link></li> 
+          </ul> 
         </li>
             <Link className="nav-link" to="/about">
               About Us
