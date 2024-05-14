@@ -56,6 +56,9 @@ class Course(models.Model):
         total_enrolled_students=StudentCourseEnrollement.objects.filter(course=self).count()
         return total_enrolled_students
 
+    def course_rating(self):
+        course_rating=CourseRating.objects.filter(course=self).aggregate(avg_rating=models.Avg('rating'))
+        return course_rating['avg_rating']
     def __str__(self):
         return self.title
 
@@ -104,3 +107,16 @@ class StudentCourseEnrollement(models.Model):
         return f"{self.course}-{self.student}"
     class Meta:
         verbose_name_plural= "6. Enrolled Courses"
+
+# course rating and review
+class CourseRating(models.Model):
+    course=models.ForeignKey(Course,on_delete=models.CASCADE)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE)
+    rating=models.PositiveBigIntegerField(default=0)
+    reviews=models.TextField(null=True)
+    review_time=models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.course}-{self.student}-{self.rating}"
+    class Meta:
+        verbose_name_plural= "7. Course Ratings"
+

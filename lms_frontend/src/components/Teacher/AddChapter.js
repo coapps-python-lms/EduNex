@@ -6,6 +6,7 @@ import axios from "axios";
 const baseUrl = "http://127.0.0.1:8000/api";
 
 function AddChapter() {
+  const [videoDuration,setVideoDuration]=useState([])
   const [chapterData, setChapterData] = useState({
     title: "",
     description: "",

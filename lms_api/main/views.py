@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer
 from . import models
 
 class TeacherList(generics.ListCreateAPIView):
@@ -164,3 +164,21 @@ class EnrolledStudentList(generics.ListAPIView):
         course_id = self.kwargs['course_id']
         course=models.Course.objects.get(pk=course_id)
         return models.StudentCourseEnrollement.objects.filter(course=course)
+
+# course rating
+class CourseRatingList(generics.ListCreateAPIView):
+    serializer_class = CourseRatingSerializer
+    def get_queryset(self):    
+        course_id = self.kwargs['course_id']
+        course=models.Course.objects.get(pk=course_id)
+        return models.CourseRating.objects.filter(course=course)
+
+# fetch rating status
+def fetch_rating_status(request,student_id,course_id):
+    student=models.Student.objects.filter(id=student_id).first()
+    course=models.Course.objects.filter(id=course_id).first()
+    ratingStatus=models.CourseRating.objects.filter(course=course,student=student).count()
+    if ratingStatus:
+        return JsonResponse({'bool':True})
+    else:
+        return JsonResponse({'bool':False})
