@@ -1,4 +1,5 @@
 import { useParams,Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "axios";
 import { useState, useEffect } from "react";
 const baseUrl = "http://127.0.0.1:8000/api";
@@ -9,8 +10,11 @@ function CourseDetail() {
   const [teacherData, setTeacherData] = useState([]);
   const [relatedCourseData, setRelatedCourseData] = useState([]);
   const [techListData, setTechListData] = useState([]);
+  const [userLoginStatus, setUserLoginStatus] = useState([]);
+  const [enrollStatus, setEnrollStatus] = useState([]);
   let { course_id } = useParams();
    // fetch course data
+   const studentId = localStorage.getItem("studentId");
    useEffect(() => {
     try {
       axios.get(`${baseUrl}/course/${course_id}`).then((res) => {
@@ -23,7 +27,56 @@ function CourseDetail() {
     } catch (error) {
       console.log(error);
     }
+    //enroll status
+    try {
+      axios.get(baseUrl+"/fetch-enroll-status/"+studentId+"/"+course_id).then((res) => {
+        if(res.data.bool===true){
+          setEnrollStatus('success')
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    const studentLoginStatus = localStorage.getItem("studentLoginStatus");
+      if (studentLoginStatus === "true") {
+        setUserLoginStatus('success')
+      }
   }, [course_id]); 
+  const enrollCourse=()=>{
+    
+    console.log(studentId);
+    // fetch course data
+    const _formData = new FormData();
+    _formData.append("course", course_id);
+    _formData.append("student", studentId); 
+    try {
+      axios.post(baseUrl + "/student-enroll-course/", _formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then((res)=>{
+        if (res.status === 200 || res.status===201) {
+          Swal.fire({
+            title: "You have enrolled successfully!!",
+            icon: "success",
+            toast: true,
+            timer: 3000,
+            position: "top-right",
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+        setEnrollStatus('success')
+        console.log(res.data);
+      })
+     
+      // window.location.href = "/add-courses";
+      // // Handle success: redirect, show success message
+    } catch (error) {
+      console.error("Error while enrolling the course:", error.response?.data);
+      // Handle errors: display error messages based on response
+    }
+  }
   return (
     <div className="container mt-3">
       <div className="row">
@@ -47,15 +100,26 @@ function CourseDetail() {
             <>
             <Link to={`/category/${tech.trim()}`} className="badge badge-pill text-dark bg-warning ms-2">{tech.trim()}</Link>&nbsp;
             </>
-            
+  
           ))}
           </p>
           <p className="fw-bold">Duration: 3 Hours 30 minutes </p>
           <p className="fw-bold">Total Enrolled: 456 students</p>
           <p className="fw-bold">Rating: 4/5 </p>
+          {enrollStatus==='success'&& userLoginStatus==='success'&&
+            <p><span>You have already enrolled in this course</span></p>
+          }
+          {userLoginStatus==='success'&& enrollStatus!=='success'&&
+            <p><button type="button" className="btn btn-success" onClick={enrollCourse}>Enroll in this course</button></p>
+          }
+          {userLoginStatus!=='success'&& 
+            <p><Link to="/student-login">Please login to enroll this course</Link>
+            </p>
+          }
         </div>
       </div>
       {/*Course videos */}
+      {enrollStatus==='success'&& userLoginStatus==='success'&&
       <div className="card mt-4">
         <h5 className="card-header">In this course</h5>
         <ul className="list-group list-group-flush">
@@ -89,7 +153,7 @@ function CourseDetail() {
           
         ))}
         </ul>
-      </div>
+      </div>}
       <h3 className="pb-1 mb-4 mt-5">
         Related courses
       </h3>

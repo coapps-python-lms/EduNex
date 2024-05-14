@@ -52,6 +52,8 @@ class Course(models.Model):
             return tech_list
         else:
             return "[]"
+    def __str__(self):
+        return self.title
 
 
 # chapter model
@@ -85,5 +87,16 @@ class Student(models.Model):
     username= models.CharField(max_length=200)
     password = models.CharField(max_length=100)
     interested_categories= models.TextField()
+    def __str__(self):
+        return self.full_name
     class Meta:
         verbose_name_plural= "5. Students"
+# student enrolled course
+class StudentCourseEnrollement(models.Model):
+    course=models.ForeignKey(Course,on_delete=models.CASCADE,related_name='enrolled_courses')
+    student=models.ForeignKey(Student,on_delete=models.CASCADE,related_name='enrolled_student')
+    enrolled_time=models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.course}-{self.student}"
+    class Meta:
+        verbose_name_plural= "6. Enrolled Courses"

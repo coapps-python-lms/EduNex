@@ -42,8 +42,9 @@ function Header() {
             </Link></li></>}
             
             <li><hr className = "dropdown-divider" /></li>
+            {teacherLoginStatus==='true' && <>
             <li><Link className = "dropdown-item" to="/teacher-dashboard">Dashboard</Link></li>
-            <li><Link className = "dropdown-item" to="/teacher-logout">Logout</Link></li>
+            <li><Link className = "dropdown-item" to="/teacher-logout">Logout</Link></li></>}
           </ul>
         </li>
             <li className = "nav-item dropdown">
@@ -60,9 +61,9 @@ function Header() {
 
             </Link></li></>}
             <li><hr className = "dropdown-divider" /></li>
-            
+            {studentLoginStatus==='true' && <>
             <li><Link className = "dropdown-item" to="/student-dashboard">Dashboard</Link></li>
-            <li><Link className = "dropdown-item" to="/student-logout ">Logout</Link></li> 
+            <li><Link className = "dropdown-item" to="/student-logout ">Logout</Link></li> </>}
           </ul> 
         </li>
             <Link className="nav-link" to="/about">

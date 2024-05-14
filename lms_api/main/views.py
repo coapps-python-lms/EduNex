@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer
 from . import models
 
 class TeacherList(generics.ListCreateAPIView):
@@ -142,3 +142,16 @@ def student_login(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for student login'})
 
+# student enrolled course
+class StudentEnrollCourseList(generics.ListCreateAPIView):
+    queryset = models.StudentCourseEnrollement.objects.all()
+    serializer_class = StudentEnrolledCourseSerializer
+    # permission_classes=[permissions.IsAuthenticated]
+def fetch_enroll_status(request,student_id,course_id):
+    student=models.Student.objects.filter(id=student_id).first()
+    course=models.Course.objects.filter(id=course_id).first()
+    enrollStatus=models.StudentCourseEnrollement.objects.filter(course=course,student=student).count()
+    if enrollStatus:
+        return JsonResponse({'bool':True})
+    else:
+        return JsonResponse({'bool':False})
