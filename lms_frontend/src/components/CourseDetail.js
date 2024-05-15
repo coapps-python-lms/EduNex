@@ -13,6 +13,7 @@ function CourseDetail() {
   const [userLoginStatus, setUserLoginStatus] = useState([]);
   const [enrollStatus, setEnrollStatus] = useState([]);
   const [ratingStatus, setRatingStatus] = useState([]);
+  const [favoriteStatus, setFavoriteStatus] = useState([]);
   const [AvgRating, setAvgRating] = useState(0);
   let { course_id } = useParams();
    // fetch course data
@@ -48,6 +49,18 @@ function CourseDetail() {
       axios.get(baseUrl+"/fetch-rating-status/"+studentId+"/"+course_id).then((res) => {
         if(res.data.bool===true){
           setRatingStatus('success')
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      axios.get(baseUrl+"/fetch-favorite-status/"+studentId+"/"+course_id).then((res) => {
+        if(res.data.bool===true){
+          setFavoriteStatus('success')
+        }
+        else{
+          setFavoriteStatus('')
         }
       });
     } catch (error) {
@@ -92,6 +105,67 @@ function CourseDetail() {
       console.error("Error while enrolling the course:", error.response?.data);
       // Handle errors: display error messages based on response
     }
+  }
+  // fav course
+  const markAsFavorite=()=>{
+   const _formData=new FormData();
+   _formData.append('course',course_id)
+   _formData.append('student',studentId)
+   _formData.append('status',true)
+   try {
+    axios.post(baseUrl+'/student-add-favorite-course/',_formData,{
+      headers:{
+        'Content-Type':'multipart/form-data'
+      }
+    })
+    .then((res)=>{
+      if(res.status===200||res.status===201){
+        Swal.fire({
+          title:'This course added to favorite list',
+          icon:'success',
+          toast:true,
+          timer:10000,
+          position:"top-right",
+          timerProgressBar:true,
+          showConfirmButton:false
+        });
+        setFavoriteStatus('success')
+      }
+    })
+   } catch (error) {
+     console.log(error)
+   }
+
+  }
+  // remove fav
+  const removeFavorite=(pk)=>{
+  const _formData=new FormData();
+     _formData.append('course',course_id)
+   _formData.append('student',studentId)
+   _formData.append('status',false)
+   try {
+    axios.get(baseUrl+'/student-remove-favorite-course/'+course_id+'/'+studentId,_formData,{
+      headers:{
+        'Content-Type':'multipart/form-data'
+      }
+    })
+    .then((res)=>{
+      if(res.status===200||res.status===201){
+        Swal.fire({
+          title:'This course removed from your favorite list',
+          icon:'success',
+          toast:true,
+          timer:10000,
+          position:"top-right",
+          timerProgressBar:true,
+          showConfirmButton:false
+        });
+        setFavoriteStatus('')
+      }
+    })
+   } catch (error) {
+     console.log(error)
+   }
   }
   const [ratingData, setRatingData] = useState({
     rating: "",
@@ -211,6 +285,12 @@ function CourseDetail() {
           }
           {userLoginStatus==='success'&& enrollStatus!=='success'&&
             <p><button type="button" className="btn btn-success" onClick={enrollCourse}>Enroll in this course</button></p>
+          }
+          {userLoginStatus==='success'&& favoriteStatus!=='success'&&
+            <p><button type="button" className="btn btn-outline-danger" onClick={markAsFavorite} title="Add in your favorite course list "><i className="bi bi-heart-fill"></i></button></p>
+          }
+          {userLoginStatus==='success'&& favoriteStatus==='success'&&
+            <p><button type="button" className="btn btn-danger" onClick={removeFavorite} title="Remove from your favorite course list "><i className="bi bi-heart-fill"></i></button></p>
           }
           {userLoginStatus!=='success'&& 
             <p><Link to="/student-login">Please login to enroll this course</Link>
