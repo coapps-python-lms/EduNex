@@ -275,4 +275,16 @@ class UpdateAssignment(generics.RetrieveUpdateDestroyAPIView):
 class StudentDashboard(generics.RetrieveAPIView):
     queryset=models.Student.objects.all()
     serializer_class=StudentDashboardSerializer
-
+#  student update password
+@csrf_exempt 
+def student_change_password(request,student_id):
+    password = request.POST['password']    
+    try:
+        studentData = models.Teacher.objects.get(id=student_id)
+    except models.Student.DoesNotExist:
+        studentData=None
+    if studentData:
+        models.Student.objects.filter(id=student_id).update(password=password)
+        return JsonResponse({'bool':True})
+    else:
+        return JsonResponse({'bool':False})

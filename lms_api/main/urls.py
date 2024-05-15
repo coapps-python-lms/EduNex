@@ -43,5 +43,7 @@ urlpatterns=[
     path('my-assignments/<int:student_id>/<int:teacher_id>',views.MyAssignmentList.as_view()),
     path('update-assignments/<int:pk>',views.UpdateAssignment.as_view()),
     path('student/dashboard/<int:pk>/', views.StudentDashboard.as_view()),
+    path('student/change-password/<int:student_id>/', views.student_change_password),
+
 
 ]
