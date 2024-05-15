@@ -144,3 +144,15 @@ class StudentFavoriteCourse(models.Model):
         verbose_name_plural="8. Student Favorite Courses"
     def __str__(self):
         return f"{self.course}-{self.student}"
+
+# student assignment
+class StudentAssignment(models.Model):
+    teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE,null=True)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
+    title = models.CharField(max_length=100)
+    detail = models.TextField(null=True)
+    add_time=models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.title}"
+    class Meta:
+        verbose_name_plural= "9.Student Assignment"
