@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer
 from . import models
 
 class TeacherList(generics.ListCreateAPIView):
@@ -34,6 +34,10 @@ def teacher_login(request):
             return JsonResponse({'bool': False, 'error': 'Multiple teachers found with the provided credentials'})
     else:
         return JsonResponse({'error': 'Only POST requests are allowed for teacher login'})
+# teacher dashboard
+class TeacherDashboard(generics.RetrieveAPIView):
+    queryset=models.Teacher.objects.all()
+    serializer_class=TeacherDashboardSerializer
 
 class CategoryList(generics.ListCreateAPIView):
     queryset = models.CourseCategory.objects.all()

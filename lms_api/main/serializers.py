@@ -11,6 +11,11 @@ class TeacherSerializer(serializers.ModelSerializer):
         self.Meta.depth=0
         if request and request.method=='GET':
             self.Meta.depth=1
+# dashboard
+class TeacherDashboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=models.Teacher
+        fields=['total_teacher_courses','total_teacher_students','total_teacher_chapters']
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CourseCategory

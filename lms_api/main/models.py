@@ -19,6 +19,20 @@ class Teacher(models.Model):
             return skill_list
         else:
             return "[]"
+    # Total teacher course
+    def total_teacher_courses(self):
+        total_teacher_courses=Course.objects.filter(teacher=self).count()
+        return total_teacher_courses
+    # total teacher chapters
+    def total_teacher_chapters(self):
+        total_teacher_chapters=Chapter.objects.filter(course__teacher=self).count()
+        return total_teacher_chapters
+    # total_teacher_students
+    def total_teacher_students(self):
+        total_teacher_students=StudentCourseEnrollement.objects.filter(course__teacher=self).count()
+        return total_teacher_students
+    
+
 
 #  courseCategory model
 class CourseCategory(models.Model):
