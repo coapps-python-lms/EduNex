@@ -48,7 +48,7 @@ function EditCourse() {
   }, [course_id]);
 
   const handleChange = (event) => {
-    const { name, value, files } = event.target; // Destructure event target
+    const { name, value, files } = event.target; 
 
     // Handle file upload separately
     if (files) {
