@@ -1,11 +1,78 @@
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 import TeacherSidebar from "./TeacherSidebar";
-import { useEffect } from "react";
+const baseUrl = "http://127.0.0.1:8000/api";
 
 function TeacherChangePassword() {
-  useEffect(() => {
-    document.title = "Teacher change password";
+  const teacherId = localStorage.getItem("teacherId");
+  const [teacherData, setTeacherData] = useState({
+    pssword: "",
+   
   });
+  const handleChange = (event) => {
+    const { name, value} = event.target;
+
+    setTeacherData({
+      ...teacherData,
+      [name]: value,
+    });
+  };
+  useEffect(() => {
+    // fetch current teacher data
+    try {
+      axios.get(baseUrl + "/teacher/" + teacherId).then((res) => {
+        setTeacherData({
+          password: res.data.password,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // end
+  }, [teacherId]);
+  const submitForm = async () => {
+    const teacherFormData = new FormData();
+    teacherFormData.append("password", teacherData.password);
+    try {
+      const response = await axios
+        .post(baseUrl + "/teacher/change-password/" + teacherId + "/", teacherFormData)
+        .then((res) => {
+          if (res.status === 200) {
+            Swal.fire({
+              title: "Password updated successfully!!",
+              icon: "success",
+              toast: true,
+              timer: 3000,
+              position: "top-right",
+              timerProgressBar: true,
+              showConfirmButton: false,
+            });
+            window.location.href = "/teacher-logout ";
+          }
+          else{
+            alert('Oops....Some error occured!!')
+          }
+          
+          console.log("Data updated successfully:", response.data);
+        });
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      setTeacherData({ ...teacherData, status: "error" });
+    }
+  };
+  const teacherLoginStatus = localStorage.getItem("teacherLoginStatus");
+  if (teacherLoginStatus === true) {
+    window.location.href = "/teacher-dashboard";
+  }
+  useEffect(() => {
+    document.title = "Teacher Change Password";
+  });
+ 
   return (
     <div className="container mt-4">
       <div className="row">
@@ -22,15 +89,18 @@ function TeacherChangePassword() {
                 </label>
                 <div className="col-sm-10">
                   <input
-                    type="password"
+                    type="text"
                     className="form-control"
                     id="inputPassword"
+                    name="password"
+                    // value={teacherData.password}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
               <div>
                 <hr />
-                <button className="btn btn-primary">Update</button>
+                <button className="btn btn-primary" onClick={submitForm}>Update</button>
               </div>
             </div>
           </div>

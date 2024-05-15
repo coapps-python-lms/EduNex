@@ -40,7 +40,7 @@ function TeacherSidebar() {
           Change password
         </Link>
         <Link
-          to="/teacher-login"
+          to="/teacher-logout"
           className="list-group-item list-group-item-action text-danger"
         >
           Logout
