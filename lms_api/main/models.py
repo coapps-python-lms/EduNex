@@ -113,6 +113,22 @@ class Student(models.Model):
         return self.full_name
     class Meta:
         verbose_name_plural= "5. Students"
+    #total_enrolled_courses
+    def total_enrolled_courses(self):
+        total_enrolled_courses=StudentCourseEnrollement.objects.filter(student=self).count()
+        return total_enrolled_courses
+    #  total_favorite_courses 
+    def total_favorite_courses(self):
+        total_favorite_courses=StudentFavoriteCourse.objects.filter(student=self).count()
+        return total_favorite_courses
+    # completed_assignments
+    def completed_assignments(self):
+        completed_assignments=StudentAssignment.objects.filter(student=self,student_status=True).count()
+        return completed_assignments
+    # pending_assignments
+    def pending_assignments(self):
+        pending_assignments=StudentAssignment.objects.filter(student=self,student_status=False).count()
+        return pending_assignments
 # student enrolled course
 class StudentCourseEnrollement(models.Model):
     course=models.ForeignKey(Course,on_delete=models.CASCADE,related_name='enrolled_courses')

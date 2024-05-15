@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Q
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer
 from . import models
 
 class TeacherList(generics.ListCreateAPIView):
@@ -268,4 +268,9 @@ class MyAssignmentList(generics.ListCreateAPIView):
 class UpdateAssignment(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.StudentAssignment.objects.all()
     serializer_class = StudentAssignmentSerializer
+
+# student dashboard
+class StudentDashboard(generics.RetrieveAPIView):
+    queryset=models.Student.objects.all()
+    serializer_class=StudentDashboardSerializer
 
