@@ -151,6 +151,7 @@ class StudentAssignment(models.Model):
     student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
     title = models.CharField(max_length=100)
     detail = models.TextField(null=True)
+    student_status=models.BooleanField(default=False,null=True)
     add_time=models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.title}"

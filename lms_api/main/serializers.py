@@ -86,7 +86,7 @@ class StudentAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.StudentAssignment
         # fields = '__all__'
-        fields=['id','teacher','student','title','detail','add_time']
+        fields=['id','teacher','student','title','detail','student_status','add_time']
     def __init__(self,*args,**kwargs):
         super(StudentAssignmentSerializer,self).__init__(*args,**kwargs)
         request=self.context.get('request')

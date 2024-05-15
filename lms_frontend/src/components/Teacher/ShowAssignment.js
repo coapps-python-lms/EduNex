@@ -50,13 +50,22 @@ function ShowAssignment() {
                   <tr>
                     <th>Title</th>
                     <th>Detail</th>
+                    <th>Student Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {assignmentData.map((assignment, index) => (
+                  {assignmentData.map((row, index) => (
                     <tr>
-                      <td>{assignment.title}</td>
-                      <td>{assignment.detail}</td>
+                      <td>{row.title}</td>
+                      <td>{row.detail}</td>
+                      <td>
+                                {row.student_status===false&&
+                                  <span className="badge bg-warning">Pending</span>                                }
+                                {row.student_status===true&&
+                                <span className="badge bg-success">Completed</span>
+                                }
+                            </td>
+          
                     </tr>
                   ))}
                 </tbody>
