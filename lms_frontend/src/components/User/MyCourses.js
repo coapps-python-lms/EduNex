@@ -46,7 +46,7 @@ function MyCourses(){
                         {courseData.map((row,index)=>
                         <tr>
                             <td><Link to={`/detail/${row.course.id}`}>{row.course.title}</Link></td>
-                            <td><Link to="/">{row.course.teacher.full_name}</Link></td>
+                            <td><Link to={`/teacher-details/${row.course.teacher.id}`}>{row.course.teacher.full_name}</Link></td>
                         </tr>
                         )}
                     </tbody>
