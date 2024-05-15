@@ -139,7 +139,9 @@ class StudentList(generics.ListCreateAPIView):
     queryset = models.Student.objects.all()
     serializer_class = StudentSerializer
     # permission_classes=[permissions.IsAuthenticated]
-
+class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Student.objects.all()
+    serializer_class = StudentSerializer
 # student login
 @csrf_exempt 
 def student_login(request):

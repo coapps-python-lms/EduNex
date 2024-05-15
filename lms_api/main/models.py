@@ -107,8 +107,9 @@ class Student(models.Model):
     full_name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     username= models.CharField(max_length=200)
-    password = models.CharField(max_length=100)
+    password = models.CharField(max_length=100,blank=True,null=True)
     interested_categories= models.TextField()
+    profile_picture = models.ImageField(upload_to='student_profile_imgs/',null=True)
     def __str__(self):
         return self.full_name
     class Meta:
