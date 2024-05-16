@@ -42,6 +42,10 @@ import ShowAssignment from "./Teacher/ShowAssignment";
 import AddQuiz from "./Teacher/AddQuiz";
 import AllQuiz from "./Teacher/AllQuiz";
 import EditQuiz from "./Teacher/EditQuiz";
+import AllQuestions from "./Teacher/AllQuestions";
+import AddQuizQuestion from "./Teacher/AddQuizQuestion";
+import EditQuizQuestion from "./Teacher/EditQuizQuestion";
+import AssignQuiz from "./Teacher/AssignQuiz";
 
 function Main() {
   return (
@@ -85,7 +89,12 @@ function Main() {
         <Route path="/my-assignments" element={<StudentAssignments/>}></Route>
         <Route path="/add-quiz" element={<AddQuiz/>}></Route>
         <Route path="/quiz" element={<AllQuiz/>}></Route>
+        <Route path='/add-quiz-question/:quiz_id' element={<AddQuizQuestion/>}></Route>
         <Route path="/edit-quiz/:quiz_id" element={<EditQuiz/>}></Route>
+        <Route path="/all-questions/:quiz_id" element={<AllQuestions/>}></Route>
+        <Route path='/edit-question/:question_id' element={<EditQuizQuestion/>}></Route>
+        <Route path='/assign-quiz/:course_id' element={<AssignQuiz/>}></Route>
+        
       </Switch>
       <Footer />
     </div>

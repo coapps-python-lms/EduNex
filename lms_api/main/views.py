@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Q
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuizQuestionSerializer,AssignQuizCourseSerializer
 from . import models
 from rest_framework import status
 
@@ -364,3 +364,30 @@ class TeacherQuizDetail(generics.RetrieveUpdateDestroyAPIView):
 class QuizDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Quiz.objects.all()
     serializer_class = QuizSerializer
+# quiz question
+class QuizQuestionList(generics.ListCreateAPIView):
+    serializer_class = QuizQuestionSerializer
+   
+    def get_queryset(self):
+        quiz_id = self.kwargs['quiz_id']
+        quiz=models.Quiz.objects.get(pk=quiz_id)
+        return models.QuizQuestions.objects.filter(quiz=quiz)
+# question detail
+class QuestionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.QuizQuestions.objects.all()
+    serializer_class = QuizQuestionSerializer
+# quiz assign status
+class AssignQuizCourseList(generics.ListCreateAPIView):
+    queryset = models.CourseQuiz.objects.all()
+    serializer_class = AssignQuizCourseSerializer
+def fetch_quiz_assign_status(request,quiz_id,course_id):
+    quiz=models.Quiz.objects.filter(id=quiz_id).first()
+    course=models.Course.objects.filter(id=course_id).first()
+    assignStatus=models.CourseQuiz.objects.filter(course=course,quiz=quiz).count()
+    if assignStatus:
+        return JsonResponse({'bool':True})
+    else:
+        return JsonResponse({'bool':False})
+
+
+
