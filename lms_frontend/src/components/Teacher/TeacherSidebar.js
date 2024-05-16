@@ -28,6 +28,18 @@ function TeacherSidebar() {
           My Students
         </Link>
         <Link
+          to="/quiz"
+          className="list-group-item list-group-item-action"
+        >
+          Quiz
+        </Link>
+        <Link
+          to="/add-quiz"
+          className="list-group-item list-group-item-action"
+        >
+          Add Quiz
+        </Link>
+        <Link
           to="/teacher-profile-settings"
           className="list-group-item list-group-item-action"
         >

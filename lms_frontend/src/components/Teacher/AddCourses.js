@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import TeacherSidebar from "./TeacherSidebar";
-
 const baseUrl = "http://127.0.0.1:8000/api";
-
 function AddCourses() {
   const [cats, setCats] = useState([]);
   const teacherId = localStorage.getItem("teacherId");
@@ -80,7 +79,20 @@ function AddCourses() {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      })
+      .then((res)=>{
+        if(res.status===200||res.status===201){
+          Swal.fire({
+            title: "Course Created successfully!!",
+            icon: "success",
+            toast: true,
+            timer: 3000,
+            position: "top-right",
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      })
       console.log("Course created successfully:", response.data);
       window.location.href = "/add-courses";
       // Handle success: redirect, show success message

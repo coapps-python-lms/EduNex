@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Q
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer
 from . import models
 from rest_framework import status
 
@@ -344,3 +344,7 @@ class NotificationList(generics.ListCreateAPIView):
         student_id=self.kwargs['student_id']
         student=models.Student.objects.get(pk=student_id)
         return models.Notification.objects.filter(student=student,notify_for='student',notify_subject='assignment',notify_read_status=False)
+# quiz
+class QuizList(generics.ListCreateAPIView):
+    queryset = models.Quiz.objects.all()
+    serializer_class = QuizSerializer
