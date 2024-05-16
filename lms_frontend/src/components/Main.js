@@ -46,6 +46,8 @@ import AllQuestions from "./Teacher/AllQuestions";
 import AddQuizQuestion from "./Teacher/AddQuizQuestion";
 import EditQuizQuestion from "./Teacher/EditQuizQuestion";
 import AssignQuiz from "./Teacher/AssignQuiz";
+import CourseQuizList from "./User/CourseQuizList";
+import TakeQuiz from "./User/TakeQuiz";
 
 function Main() {
   return (
@@ -94,7 +96,8 @@ function Main() {
         <Route path="/all-questions/:quiz_id" element={<AllQuestions/>}></Route>
         <Route path='/edit-question/:question_id' element={<EditQuizQuestion/>}></Route>
         <Route path='/assign-quiz/:course_id' element={<AssignQuiz/>}></Route>
-        
+        <Route path='/course-quiz/:course_id' element={<CourseQuizList/>}></Route>
+        <Route path='/take-quiz/:quiz_id' element={<TakeQuiz/>}></Route>
       </Switch>
       <Footer />
     </div>
