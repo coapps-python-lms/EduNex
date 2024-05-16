@@ -6,15 +6,13 @@ const baseUrl = "http://127.0.0.1:8000/api";
 function StudentAssignments(){
     const [assignmentData, setAssignmentData] = useState([]);
     const studentId = localStorage.getItem("studentId");
-    const teacherId = localStorage.getItem("teacherId");
-    // fetch course data
 
   useEffect(() => {
     try {
       axios
-        .get(baseUrl + "/my-assignments/"+studentId+'/'+teacherId)
+        .get(baseUrl + "/my-assignments/"+studentId)
         .then((res) => {
-          setAssignmentData(res.data);
+          setAssignmentData(res.data.assignments);
         });
     } catch (error) {
       console.log(error);
@@ -29,7 +27,7 @@ function StudentAssignments(){
     console.log(studentId);
     // fetch course data
     const _formData = new FormData();
-    _formData.append("student_status", true); 
+    _formData.append('student_status',true); 
     _formData.append('title',title)
     _formData.append('detail',detail)
     _formData.append('student',student)
@@ -40,9 +38,11 @@ function StudentAssignments(){
           "Content-Type": "multipart/form-data",
         },
       }).then((res)=>{
-        window.location.reload()
-      })
+        if(res.status===200||res.status===201){
+          window.location.reload()
+        }
       
+      })
     } catch (error) {
       console.error("Error", error.response?.data);
     
@@ -68,22 +68,23 @@ function StudentAssignments(){
                         </tr>
                     </thead>
                     <tbody>
-                        {assignmentData.map((row,index)=>
-                        <tr>
-                            <td>{row.title}</td>
-                            <td>{row.detail}</td>
-                            <td><Link to={`/teacher-details/${row.teacher.id}`}>{row.teacher.full_name}</Link></td>
-                            <td>
-                                {row.student_status===false&&
-                                <button onClick={()=>markAsDone(row.id,row.title,row.detail,row.student.id,row.teacher.id)} className="btn btn-success btn-sm">Mark as Done</button>
-                                }
-                                {row.student_status===true&&
-                                <span className="badge bg-primary">Completed</span>
-                                }
-                            </td>
-                        </tr>
-                        )}
-                    </tbody>
+  {Array.isArray(assignmentData) && assignmentData.map((row, index) => (
+    <tr key={index}>
+      <td>{row.title}</td>
+      <td>{row.detail}</td>
+      <td><Link to={`/teacher-details/${row.teacher.id}`}>{row.teacher.full_name}</Link></td>
+      <td>
+        {row.student_status === false &&
+          <button onClick={() => markAsDone(row.id, row.title, row.detail, row.student.id, row.teacher.id)} className="btn btn-success btn-sm">Mark as Done</button>
+        }
+        {row.student_status === true &&
+          <span className="badge bg-primary">Completed</span>
+        }
+      </td>
+    </tr>
+  ))}
+</tbody>
+
                 </table>
             </div>
         </div>

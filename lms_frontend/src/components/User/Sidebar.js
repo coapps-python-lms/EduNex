@@ -1,5 +1,24 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios'
+const baseUrl = 'http://127.0.0.1:8000/api'
 function Sidebar(){
+    const [notifyData, setNotifyData] = useState([]);
+    const [notificationCount, setNotificationCount] = useState(0);
+    const studentId = localStorage.getItem('studentId');
+
+    useEffect(() => {
+        try {
+            axios.get(baseUrl+'/student/fetch-all-notifications/'+studentId)
+                .then((res) => {
+                    console.log(res);
+                    setNotifyData(res.data);
+                    setNotificationCount(res.data.length);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }, [studentId]); // Add notifyData as dependency
     return(
         <div className="card">
             <div className="list-group list-group-flush">
@@ -7,7 +26,7 @@ function Sidebar(){
                 <Link to="/my-courses" className="list-group-item list-group-item-action">My Courses</Link>
                 <Link to="/favorite-courses" className="list-group-item list-group-item-action">Favorite Courses</Link>
                 <Link to="/recommended-courses" className="list-group-item list-group-item-action">Recommended Courses</Link>
-                <Link to="/my-assignments" className="list-group-item list-group-item-action">My Assignments</Link>
+                <Link to="/my-assignments" className="list-group-item list-group-item-action">My Assignments<span className="float-end badge bg-danger mt-1">{notificationCount}</span></Link>
                 <Link to="/profile-settings" className="list-group-item list-group-item-action">Profile settings</Link>
                 <Link to="/change-password" className="list-group-item list-group-item-action">Change password</Link>
                 <Link to="/student-logout" className="list-group-item list-group-item-action text-danger">Logout</Link>

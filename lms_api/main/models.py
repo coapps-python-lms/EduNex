@@ -174,3 +174,13 @@ class StudentAssignment(models.Model):
         return f"{self.title}"
     class Meta:
         verbose_name_plural= "9.Student Assignment"
+# notification modal
+class Notification(models.Model):
+    teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE,null=True)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
+    notify_for=models.CharField(max_length=100,null=True)
+    notify_subject=models.CharField(max_length=100,null=True)
+    notify_created_time=models.DateTimeField(auto_now_add=True)
+    notify_read_status=models.BooleanField(default=False,null=True)
+    class Meta:
+        verbose_name_plural= "10.Notification"

@@ -50,9 +50,22 @@ function AddAssignment() {
               position: "top-right",
               timerProgressBar: true,
               showConfirmButton: false,
-            });
-          }
-          console.log(res.data);
+            })}
+            console.log(res.data);
+            const _notifyData=new FormData();
+            _notifyData.append('teacher',teacher_id)
+            _notifyData.append('notify_subject','assignment')
+            _notifyData.append('notify_for','student')
+            _notifyData.append('student',student_id)
+            axios.post(baseUrl+'/save-notification/',_notifyData,{
+              headers:{
+                'Content-Type':'multipart/form-data'
+              }
+            })
+            .then((res)=>{
+              console.log('notification added')
+            })
+          
         });
       window.location.reload();
     } catch (error) {

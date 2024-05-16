@@ -82,19 +82,41 @@ class StudentFavoriteCourseSerializer(serializers.ModelSerializer):
             self.Meta.depth=2
         
 # assignment
+
 class StudentAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.StudentAssignment
-        # fields = '__all__'
-        fields=['id','teacher','student','title','detail','student_status','add_time']
-    def __init__(self,*args,**kwargs):
-        super(StudentAssignmentSerializer,self).__init__(*args,**kwargs)
-        request=self.context.get('request')
-        self.Meta.depth=0
-        if request and request.method=='GET':
-            self.Meta.depth=2
+        fields = ['id', 'teacher', 'student', 'title', 'detail', 'student_status', 'add_time']
+        extra_kwargs = {
+            'student_status': {'required': True}
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(StudentAssignmentSerializer, self).__init__(*args, **kwargs)
+        request = self.context.get('request')
+        self.Meta.depth = 0
+        if request and request.method == 'GET':
+            self.Meta.depth = 2
+
+    def validate_student_status(self, value):
+        if not isinstance(value, bool):
+            raise serializers.ValidationError("Must be a valid boolean.")
+        return value
+
+    def create(self, validated_data):
+        if 'student_status' not in validated_data:
+            validated_data['student_status'] = False  # Set default value if not provided
+        return super().create(validated_data)
+
+
 # student serializer
 class StudentDashboardSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Student
         fields=['total_enrolled_courses','total_favorite_courses','completed_assignments','pending_assignments']
+# notification
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Notification
+        fields=['id','teacher','student','notify_subject','notify_for','notify_created_time','notify_read_status']
+  

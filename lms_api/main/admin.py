@@ -10,3 +10,6 @@ admin.site.register(models.StudentCourseEnrollement)
 admin.site.register(models.CourseRating)
 admin.site.register(models.StudentFavoriteCourse)
 admin.site.register(models.StudentAssignment)
+# class NotificationAdmin(admin.ModelAdmin):
+#     list_display= ['id','notify_subject','notify_for','notify_read_status']
+admin.site.register(models.Notification)

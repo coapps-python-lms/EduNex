@@ -8,8 +8,9 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Q
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer
 from . import models
+from rest_framework import status
 
 class TeacherList(generics.ListCreateAPIView):
     queryset = models.Teacher.objects.all()
@@ -252,21 +253,67 @@ def remove_favorite_course(request,course_id,student_id):
 class AssignmentList(generics.ListCreateAPIView):
     queryset = models.StudentAssignment.objects.all()
     serializer_class = StudentAssignmentSerializer
+
     def get_queryset(self):
         student_id = self.kwargs['student_id']
         teacher_id = self.kwargs['teacher_id']
-        student=models.Student.objects.get(pk=student_id)
-        teacher=models.Teacher.objects.get(pk=teacher_id)
-        return models.StudentAssignment.objects.filter(student=student,teacher=teacher)
+        return models.StudentAssignment.objects.filter(student_id=student_id, teacher_id=teacher_id)
+
+    def create(self, request, *args, **kwargs):
+        student_id = self.kwargs['student_id']
+        teacher_id = self.kwargs['teacher_id']
+        data = request.data.copy()
+        data['student'] = student_id
+        data['teacher'] = teacher_id
+
+        # Ensure that student_status is included and converted to boolean
+        student_status = data.get('student_status', 'false').lower()
+        if student_status in ['true', '1']:
+            data['student_status'] = True
+        else:
+            data['student_status'] = False
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 class MyAssignmentList(generics.ListCreateAPIView):
     queryset = models.StudentAssignment.objects.all()
     serializer_class = StudentAssignmentSerializer
+
     def get_queryset(self):
         student_id = self.kwargs['student_id']
-        teacher_id = self.kwargs['teacher_id']
-        student=models.Student.objects.get(pk=student_id)
-        teacher=models.Teacher.objects.get(pk=teacher_id)
-        return models.StudentAssignment.objects.filter(student=student,teacher=teacher)
+        student = models.Student.objects.get(pk=student_id)
+
+        # Update notifications to mark them as read
+        models.Notification.objects.filter(
+            student=student, 
+            notify_for='student', 
+            notify_subject='assignment', 
+            notify_read_status=False
+        ).update(notify_read_status=True)
+
+        return models.StudentAssignment.objects.filter(student=student)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        
+        # Get the updated unread notifications count
+        student_id = self.kwargs['student_id']
+        student = models.Student.objects.get(pk=student_id)
+        unread_notifications_count = models.Notification.objects.filter(
+            student=student, 
+            notify_read_status=False
+        ).count()
+
+        # Include the unread notifications count in the response
+        return Response({
+            'assignments': serializer.data,
+            'unread_notifications_count': unread_notifications_count
+        })
+
 class UpdateAssignment(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.StudentAssignment.objects.all()
     serializer_class = StudentAssignmentSerializer
@@ -288,3 +335,12 @@ def student_change_password(request,student_id):
         return JsonResponse({'bool':True})
     else:
         return JsonResponse({'bool':False})
+# notification
+class NotificationList(generics.ListCreateAPIView):
+    queryset=models.Notification.objects.all()
+    serializer_class=NotificationSerializer
+
+    def get_queryset(self):
+        student_id=self.kwargs['student_id']
+        student=models.Student.objects.get(pk=student_id)
+        return models.Notification.objects.filter(student=student,notify_for='student',notify_subject='assignment',notify_read_status=False)
