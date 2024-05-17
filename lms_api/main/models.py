@@ -229,3 +229,13 @@ class AttemptQuiz(models.Model):
     add_time=models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name_plural= "14.Attempted Quiz Questions"
+
+# studey material
+class StudyMaterial(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.TextField(null=True)
+    upload= models.FileField(upload_to='study_materials/',null=True)
+    remarks = models.TextField(null=True)
+    class Meta:
+        verbose_name_plural= "15. Course Study Material"

@@ -26,10 +26,10 @@ function TeacherCourses() {
   return (
     <div className="container mt-4">
       <div className="row">
-        <aside className="col-md-3">
+        <aside className="col-md-2">
           <TeacherSidebar />
         </aside>
-        <section className="col-md-9">
+        <section className="col-md-10">
           <div className="card">
             <h5 className="card-header"> My Courses</h5>
             <div className="card-body">
@@ -69,6 +69,12 @@ function TeacherCourses() {
                           className="btn btn-info btn-sm ms-2"
                         >
                          Edit
+                        </Link>
+                        <Link
+                          to={"/study-material/" + course.id}
+                          className="btn btn-primary btn-sm ms-2"
+                        >
+                        Study Material
                         </Link>
                         <Link
                           to={"/add-chapter/" + course.id}

@@ -48,6 +48,11 @@ import EditQuizQuestion from "./Teacher/EditQuizQuestion";
 import AssignQuiz from "./Teacher/AssignQuiz";
 import CourseQuizList from "./User/CourseQuizList";
 import TakeQuiz from "./User/TakeQuiz";
+import Search from "./Search";
+import StudyMaterials from "./Teacher/StudyMaterials";
+import AddStudyMaterial from "./Teacher/AddStudyMaterial";
+import EditStudyMaterial from "./Teacher/EditStudyMaterial";
+import UserStudyMaterials from "./User/UserStudyMaterial";
 
 function Main() {
   return (
@@ -98,6 +103,11 @@ function Main() {
         <Route path='/assign-quiz/:course_id' element={<AssignQuiz/>}></Route>
         <Route path='/course-quiz/:course_id' element={<CourseQuizList/>}></Route>
         <Route path='/take-quiz/:quiz_id' element={<TakeQuiz/>}></Route>
+        <Route path='/search/:searchString' element={<Search/>}></Route>
+        <Route path='/study-material/:course_id' element={<StudyMaterials/>}></Route>
+        <Route path='/add-study/:course_id' element={<AddStudyMaterial/>}></Route>
+        <Route path='/edit-study/:study_id' element={<EditStudyMaterial/>}></Route>
+        <Route path='/user-study-material/:course_id' element={<UserStudyMaterials/>}></Route>
       </Switch>
       <Footer />
     </div>

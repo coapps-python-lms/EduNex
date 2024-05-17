@@ -13,11 +13,11 @@ function AddAssignment() {
   });
 
   const handleChange = (event) => {
-    const { name, value } = event.target; // Destructure event target
+    const { name, value } = event.target; 
 
     setAssignmentData({
       ...assignmentData,
-      [name]: value, // Update other fields
+      [name]: value, 
     });
   };
   const { student_id } = useParams();

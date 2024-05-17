@@ -40,6 +40,7 @@ function MyCourses(){
                             <th>Name</th>
                             <th>Created By</th>
                             <th>Quiz</th>
+                            <th>Study Materials</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +48,16 @@ function MyCourses(){
                         <tr>
                             <td><Link to={`/detail/${row.course.id}`}>{row.course.title}</Link></td>
                             <td><Link to={`/teacher-details/${row.course.teacher.id}`}>{row.course.teacher.full_name}</Link></td>
-                            <td><Link className='btn btn-sm bg-warning' to={`/course-quiz/${row.course.id}`}>Quiz List</Link></td>
+                            <td><Link className='btn btn-sm bg-warning' to={`/course-quiz/${row.course.id}`}>Quiz List</Link>
+              
+                            </td>
+                            <td><Link
+                          to={"/user-study-material/" + row.course.id}
+                          className="btn btn-primary btn-sm ms-2"
+                        >
+                        Study Material
+                        </Link></td>
+                            
                         </tr>
                         )}
                     </tbody>

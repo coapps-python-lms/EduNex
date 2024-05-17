@@ -11,6 +11,7 @@ urlpatterns=[
     path('category/',views.CategoryList.as_view()),
      #course
     path('course/',views.CourseList.as_view()),
+    path('search-courses/<str:seacrhString>',views.CourseList.as_view()),
     # course detail
     path('course/<int:pk>/',views.CourseDetailView.as_view()),
     path('add-course',views.create_course),
@@ -61,5 +62,8 @@ urlpatterns=[
     path('attempt-quiz/',views.AttemptQuizList.as_view()),
     path('quiz-questions/<int:quiz_id>/next-question/<int:question_id>',views.QuizQuestionList.as_view()),
     path('fetch-quiz-attempt-status/<int:quiz_id>/<int:student_id>',views.fetch_quiz_attempt_status),
-
+    # study material
+    path('study-materials/<int:course_id>',views.StudyMaterialList.as_view()),
+    path('study-material/<int:pk>',views.StudyMaterialDetail.as_view()),
+    path('user/study-materials/<int:course_id>',views.StudyMaterialList.as_view()),
 ]

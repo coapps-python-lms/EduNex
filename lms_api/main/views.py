@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Q
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuizQuestionSerializer,AssignQuizCourseSerializer,CourseQuizSerializer,AttemptQuizSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,StudyMaterialSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuizQuestionSerializer,AssignQuizCourseSerializer,CourseQuizSerializer,AttemptQuizSerializer
 from . import models
 from rest_framework import status
 
@@ -65,6 +65,12 @@ class CourseList(generics.ListCreateAPIView):
                 teacher=self.request.GET['teacher']
                 teacher=models.Teacher.objects.filter(id=teacher).first()
                 qs=models.Course.objects.filter(techs__icontains=skill_name,teacher=teacher)
+            if 'searchString' in self.kwargs:
+                search=self.kwargs['searchString']
+                if search:
+                    qs=models.Course.objects.filter(Q(title__icontains=search)|Q(techs__icontains=search))
+                
+                
             elif 'studentId' in self.kwargs:
                 student_id=self.kwargs['studentId']
                 student=models.Student.objects.get(pk=student_id)
@@ -416,4 +422,14 @@ def fetch_quiz_attempt_status(request,quiz_id,student_id):
         return JsonResponse({'bool':True})
     else:
         return JsonResponse({'bool':False})
-
+# study material
+class StudyMaterialList(generics.ListCreateAPIView):
+    serializer_class = StudyMaterialSerializer
+    # permission_classes=[permissions.IsAuthenticated]
+    def get_queryset(self):
+        course_id = self.kwargs['course_id']
+        course=models.Course.objects.get(pk=course_id)
+        return models.StudyMaterial.objects.filter(course=course)
+class StudyMaterialDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset=models.StudyMaterial.objects.all()
+    serializer_class=StudyMaterialSerializer
