@@ -18,15 +18,15 @@ function TeacherDetails(){
     } catch (error) {
       console.log(error);
     }
-  }, [teacher_id,skillData]);
+  }, [teacher_id]);
     return(
         <div className="container mt-3">
         <div className="row">
           <div className="col-4">
             <img
-              src="/logo512.png"
+              src={teacherData.profile_picture}
               className="img-thumbnail"
-              alt="Teacher_Image"
+              alt={teacherData.full_name}
             />
           </div>
           <div className="col-8">
@@ -43,7 +43,7 @@ function TeacherDetails(){
           ))}
             </p>
             <p className="fw-bold">Recent Course:  <Link to="/teacher-details/1">Javascript Course</Link> </p>
-            <p className="fw-bold">Rating: 4/5 </p>
+            <p className="fw-bold">Total Courses: {teacherData.total_teacher_courses} </p>
           </div>
         </div>
         {/*Course videos */}

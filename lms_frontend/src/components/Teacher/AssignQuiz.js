@@ -76,6 +76,7 @@ function AssignQuiz() {
                       <td>
                         <CheckQuizInCourse quiz={quiz.id} course={course_id} />
                       </td>
+                      
                     </tr>
                   ))}
                 </tbody>

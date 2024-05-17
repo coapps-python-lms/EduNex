@@ -51,6 +51,7 @@ class Course(models.Model):
     description = models.TextField(null=True)
     featured_img = models.ImageField(upload_to='course imgs/',null=True)
     techs = models.TextField(null=True)
+    course_views=models.BigIntegerField(default=0)
     class Meta:
         verbose_name_plural= "3. Courses"
 

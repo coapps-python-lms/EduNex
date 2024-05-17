@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import {useEffect,useState} from 'react';
 import axios from 'axios';
-const baseUrl = 'http://127.0.0.1:8000/api/';
+const baseUrl = 'http://127.0.0.1:8000/api';
 function PopularTeachers() {
-  const [teacher,setTeacher] = useState(null);
+  const [populaTeacherData, setPopularTeacherData] = useState([]);
   useEffect(()=>{
-    axios.get(baseUrl+'teacher/').then((response)=>{
-      setTeacher(response.data)
-    })
+    try {
+      axios.get(baseUrl+'/popular-teachers/?popular=1')
+      .then((res)=>{
+        setPopularTeacherData(res.data)
+      })
+    } catch (error) {
+      console.log(error)
+    }
   },[]);
-  console.log(teacher);
   return (
   <div className="container mt-3">
   {/**Popular Teachers */}
@@ -17,149 +21,25 @@ function PopularTeachers() {
         Popular Teachers
       </h3>
       <div className="row mb-4">
-        <div className="col-md-3 mb-4">
+        {populaTeacherData&&populaTeacherData.map((row,index)=>
+        <div className="col-md-3">
           <div className="card">
-            <Link to="/teacher-details/1">
-              <img src="logo-demo.jpg" className="card-img-top" alt="..." />
+            <Link to={`/teacher-details/${row.id}`}>
+              <img src={row.profile_picture} className="card-img-top" alt={row.full_name}/>
             </Link>
             <div className="card-body">
               <h5 className="card-title">
-                <Link to="/teacher-details/1">Teacher Name</Link>
+                <Link to={`/teacher-details/${row.id}`}>{row.full_name}</Link>
               </h5>
             </div>
             <div className="card-footer">
               <div className="title">
-                <span>Rating: 4.5/5</span>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3 mb-4">
-          <div className="card">
-            <Link to="/teacher-details/1">
-              <img src="logo-demo.jpg" className="card-img-top" alt="..." />
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title">
-                <Link to="/teacher-details/1">Teacher Name</Link>
-              </h5>
-            </div>
-            <div className="card-footer">
-              <div className="title">
-                <span>Rating: 4.5/5</span>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3 mb-4">
-          <div className="card">
-            <Link to="/teacher-details/1">
-              <img src="logo-demo.jpg" className="card-img-top" alt="..." />
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title">
-                <Link to="/teacher-details/1">Teacher Name</Link>
-              </h5>
-            </div>
-            <div className="card-footer">
-              <div className="title">
-                <span>Rating: 4.5/5</span>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3 mb-4">
-          <div className="card">
-            <Link to="/teacher-details/1">
-              <img src="logo-demo.jpg" className="card-img-top" alt="..." />
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title">
-                <Link to="/teacher-details/1">Teacher Name</Link>
-              </h5>
-            </div>
-            <div className="card-footer">
-              <div className="title">
-                <span>Rating: 4.5/5</span>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3 mb-4">
-          <div className="card">
-            <Link to="/teacher-details/1">
-              <img src="logo-demo.jpg" className="card-img-top" alt="..." />
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title">
-                <Link to="/teacher-details/1">Teacher Name</Link>
-              </h5>
-            </div>
-            <div className="card-footer">
-              <div className="title">
-                <span>Rating: 4.5/5</span>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3 mb-4">
-          <div className="card">
-            <Link to="/teacher-details/2">
-              <img src="logo-demo.jpg" className="card-img-top" alt="..." />
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title">
-                <Link to="/teacher-details/2">Teacher Name</Link>
-              </h5>
-            </div>
-            <div className="card-footer">
-              <div className="title">
-                <span>Rating: 4.5/5</span>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3 mb-4">
-          <div className="card">
-            <Link to="/teacher-details/3">
-              <img src="logo-demo.jpg" className="card-img-top" alt="..." />
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title">
-                <Link to="/teacher-details/3">Teacher Name</Link>
-              </h5>
-            </div>
-            <div className="card-footer">
-              <div className="title">
-                <span>Rating: 4.5/5</span>
-               
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-3 mb-4">
-          <div className="card">
-            <Link to="/teacher-details/4">
-              <img src="logo-demo.jpg" className="card-img-top" alt="..." />
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title">
-                <Link to="/teacher-details/4">Teacher Name</Link>
-              </h5>
-            </div>
-            <div className="card-footer">
-              <div className="title">
-                <span>Rating: 4.5/5</span>
+                <span>Total Courses: {row.total_teacher_courses}</span>
                </div>
             </div>
           </div>
         </div>
+        )}
       </div>
       {/**End Popular Teachers */}
       {/* pagination start */}

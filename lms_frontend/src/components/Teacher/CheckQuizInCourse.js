@@ -1,5 +1,6 @@
 import TeacherSidebar from "./TeacherSidebar";
 import { useState,useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 const baseUrl='http://127.0.0.1:8000/api'
@@ -44,7 +45,15 @@ function CheckQuizInCourse(props){
         }
         {
             quizData.bool===true&&
-            <span className='text-success'>Assigned</span>
+            <>
+            <span className='btn btn-secondary btn-sm'>Assigned</span>
+        
+                        <Link to={`/attempted-students/${props.quiz}`} className="btn btn-sm btn-info ms-5">
+                          Attempted Students
+                        </Link>
+                      
+            </>
+            
         }
       </td>
     )

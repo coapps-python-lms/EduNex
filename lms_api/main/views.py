@@ -1,4 +1,7 @@
 from webbrowser import get
+from django.db.models import Count
+from django.db.models import Avg
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -15,7 +18,14 @@ from rest_framework import status
 class TeacherList(generics.ListCreateAPIView):
     queryset = models.Teacher.objects.all()
     serializer_class = TeacherSerializer
-    # permission_classes=[permissions.IsAuthenticated]
+    def get_queryset(self):
+        if 'popular' in self.request.GET:
+            queryset = models.Teacher.objects.annotate(
+                total_course=Count('teacher_courses')
+            ).order_by('-total_course')
+            return queryset
+   
+
 
 class TeacherDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Teacher.objects.all()
@@ -199,12 +209,17 @@ class EnrolledStudentList(generics.ListAPIView):
             return models.StudentCourseEnrollement.objects.filter(student=student).distinct()
 # course rating
 class CourseRatingList(generics.ListCreateAPIView):
+    queryset=models.CourseRating.objects.all()
     serializer_class = CourseRatingSerializer
-    def get_queryset(self):    
-        course_id = self.kwargs['course_id']
-        course=models.Course.objects.get(pk=course_id)
-        return models.CourseRating.objects.filter(course=course)
-
+    def get_queryset(self):
+        if 'popular' in self.request.GET:
+            return models.Course.objects.annotate(avg_rating=Avg('courserating__rating')).order_by('-avg_rating')[:4]
+        
+        if 'all' in self.request.GET:
+            return models.Course.objects.annotate(avg_rating=Avg('courserating__rating')).order_by('-avg_rating')
+        
+        return models.CourseRating.objects.filter(course__isnull=False).order_by('-rating')
+   
 # fetch rating status
 def fetch_rating_status(request,student_id,course_id):
     student=models.Student.objects.filter(id=student_id).first()
@@ -413,15 +428,28 @@ class CourseQuizList(generics.ListCreateAPIView):
 class AttemptQuizList(generics.ListCreateAPIView):
     queryset=models.AttemptQuiz.objects.all()
     serializer_class=AttemptQuizSerializer
+    def get_queryset(self):
+        if 'quiz_id' in self.kwargs:
+            quiz_id=self.kwargs['quiz_id']
+            quiz=models.Quiz.objects.get(pk=quiz_id)
+            return models.AttemptQuiz.objects.filter(quiz=quiz)
 
 def fetch_quiz_attempt_status(request,quiz_id,student_id):
     quiz=models.Quiz.objects.filter(id=quiz_id).first()
     student=models.Student.objects.filter(id=student_id).first()
     attemptStatus=models.AttemptQuiz.objects.filter(student=student,question__quiz=quiz).count()
+    print(models.AttemptQuiz.objects.filter(student=student,question__quiz=quiz).query)
     if attemptStatus>0:
         return JsonResponse({'bool':True})
     else:
         return JsonResponse({'bool':False})
+
+def fetch_quiz_attempt_status(request,quiz_id,student_id):
+    quiz=models.Quiz.objects.filter(id=quiz_id).first()
+    student=models.Student.objects.filter(id=student_id).first()
+    total_questions=models.QuizQuestions.objects.filter(quiz=quiz).count()
+    total_attempted_questions=models.AttemptQuiz.objects.filter(student=student,quiz=quiz).values('student').count()
+    return JsonResponse({'total_questions':total_questions,'total_attempted_questions':total_attempted_questions})
 # study material
 class StudyMaterialList(generics.ListCreateAPIView):
     serializer_class = StudyMaterialSerializer
@@ -433,3 +461,9 @@ class StudyMaterialList(generics.ListCreateAPIView):
 class StudyMaterialDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset=models.StudyMaterial.objects.all()
     serializer_class=StudyMaterialSerializer
+# update view
+def update_view(request,course_id):
+    queryset=models.Course.objects.filter(pk=course_id).first()
+    queryset.course_views+=1
+    queryset.save()
+    return JsonResponse({'views':queryset.course_views})

@@ -14,6 +14,7 @@ function CourseDetail() {
   const [enrollStatus, setEnrollStatus] = useState([]);
   const [ratingStatus, setRatingStatus] = useState([]);
   const [favoriteStatus, setFavoriteStatus] = useState([]);
+  const[courseViews, setCourseViews] = useState([]);
   const [AvgRating, setAvgRating] = useState(0);
   let { course_id } = useParams();
    // fetch course data
@@ -31,6 +32,12 @@ function CourseDetail() {
         }
         
       });
+
+      // update views
+      axios.get(baseUrl+'/update-view/'+course_id)
+      .then((res)=>{
+        setCourseViews(res.data.views)
+      })
     } catch (error) {
       console.log(error);
     }
@@ -44,6 +51,8 @@ function CourseDetail() {
     } catch (error) {
       console.log(error);
     }
+
+    
     //fetch rating status
     try {
       axios.get(baseUrl+"/fetch-rating-status/"+studentId+"/"+course_id).then((res) => {
@@ -237,6 +246,7 @@ function CourseDetail() {
           </p>
           <p className="fw-bold">Duration: 3 Hours 30 minutes </p>
           <p className="fw-bold">Total Enrolled: {courseData.total_enrolled_students} Student(s)</p>
+          <p className="fw-bold">Views: {courseViews}</p>
           <p className="fw-bold">
             Rating: {AvgRating}/5 
             {enrollStatus==='success'&& userLoginStatus==='success'&& 

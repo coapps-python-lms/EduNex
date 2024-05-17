@@ -4,7 +4,7 @@ from . import models
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Teacher
-        fields=['id','full_name','email','password','qualification','mobile_no','skills','profile_picture','teacher_courses','skill_list']
+        fields=['id','full_name','email','password','qualification','mobile_no','skills','profile_picture','teacher_courses','skill_list','total_teacher_courses']
     def __init__(self,*args,**kwargs):
         super(TeacherSerializer,self).__init__(*args,**kwargs)
         request=self.context.get('request')
@@ -24,7 +24,7 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Course
         # fields = '__all__'
-        fields=['id','category','teacher','title','description','featured_img','techs','course_chapters','related_videos','tech_list','total_enrolled_students','course_rating']
+        fields=['id','category','teacher','title','description','course_views','featured_img','techs','course_chapters','related_videos','tech_list','total_enrolled_students','course_rating']
     def __init__(self,*args,**kwargs):
         super(CourseSerializer,self).__init__(*args,**kwargs)
         request=self.context.get('request')
@@ -68,7 +68,7 @@ class CourseRatingSerializer(serializers.ModelSerializer):
         request=self.context.get('request')
         self.Meta.depth=0
         if request and request.method=='GET':
-            self.Meta.depth=1
+            self.Meta.depth=2
 #  fav course
 class StudentFavoriteCourseSerializer(serializers.ModelSerializer):
     class Meta:

@@ -66,4 +66,10 @@ urlpatterns=[
     path('study-materials/<int:course_id>',views.StudyMaterialList.as_view()),
     path('study-material/<int:pk>',views.StudyMaterialDetail.as_view()),
     path('user/study-materials/<int:course_id>',views.StudyMaterialList.as_view()),
+    path('attempted-quiz/<int:quiz_id>',views.AttemptQuizList.as_view()),
+    path('fetch-quiz-result/<int:quiz_id>/<int:student_id>',views.fetch_quiz_attempt_status),
+    path('popular-courses/',views.CourseRatingList.as_view()),
+    path('update-view/<int:course_id>',views.update_view),
+    path('popular-teachers/',views.TeacherList.as_view()),
+    path('student-testimonial/',views.CourseRatingList.as_view()),
 ]
