@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:8000/api";

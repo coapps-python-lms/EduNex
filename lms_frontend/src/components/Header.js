@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { useState } from "react";
 function Header() {
   const teacherLoginStatus= localStorage.getItem('teacherLoginStatus')
   const studentLoginStatus= localStorage.getItem('studentLoginStatus')
+
   const [searchString,setSearchString]=useState({
     'search':''
   })
@@ -91,9 +92,6 @@ function Header() {
             <li><Link className = "dropdown-item" to="/student-logout ">Logout</Link></li> </>}
           </ul> 
         </li>
-            <Link className="nav-link" to="/about">
-              About Us
-            </Link>
           </div>
         </div>
       </div>

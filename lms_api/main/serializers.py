@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from . import models
+from django.contrib.flatpages.models import FlatPage
 
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
@@ -197,3 +198,9 @@ class FAQSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.FAQ
         fields=['id','question','answer']
+
+# flat pages
+class FlatPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=FlatPage
+        fields=['id','title','content','url']

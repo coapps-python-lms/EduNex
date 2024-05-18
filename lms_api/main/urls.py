@@ -74,4 +74,7 @@ urlpatterns=[
     path('student-testimonial/',views.CourseRatingList.as_view()),
     # footer
     path('faq/',views.FAQList.as_view()),
+    # flat page
+    path('pages/',views.FlatPagesList.as_view()),
+    path('pages/<int:pk>/<str:page_slug>/',views.FlatPagesDetail.as_view()),
 ]

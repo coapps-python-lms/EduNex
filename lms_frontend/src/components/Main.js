@@ -1,6 +1,5 @@
 import Header from "./Header";
 import Home from "./Home";
-import About from "./About";
 //user routes
 import CourseDetail from "./CourseDetail";
 import TeacherDetails from "./TeacherDetails";
@@ -56,6 +55,7 @@ import UserStudyMaterials from "./User/UserStudyMaterial";
 import AttemptedStudents from "./Teacher/AttemptedStudents";
 import Category from "./Category";
 import FAQ from "./FAQ";
+import Page from "./Page";
 
 function Main() {
   return (
@@ -63,7 +63,7 @@ function Main() {
       <Header />
       <Switch> 
         <Route path="/" element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
+        <Route path="/page/:page_id/:page_slug" element={<Page />}></Route>
         <Route path="/detail/:course_id" element={<CourseDetail />}></Route>
         <Route path="/teacher-details/:teacher_id" element={<TeacherDetails/>}></Route>
         <Route path="/student-login" element={<Login />}></Route>
