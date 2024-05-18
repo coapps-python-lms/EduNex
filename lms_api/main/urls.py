@@ -77,4 +77,6 @@ urlpatterns=[
     # flat page
     path('pages/',views.FlatPagesList.as_view()),
     path('pages/<int:pk>/<str:page_slug>/',views.FlatPagesDetail.as_view()),
+    # contact
+    path('contact/',views.ContactList.as_view()),
 ]

@@ -12,7 +12,7 @@ from rest_framework import generics
 from django.db.models import Q
 from django.contrib.flatpages.models import FlatPage
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,FlatPageSerializer,CourseSerializer,FAQSerializer,StudyMaterialSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuizQuestionSerializer,AssignQuizCourseSerializer,CourseQuizSerializer,AttemptQuizSerializer
+from .serializers import TeacherSerializer,CategorySerializer,FlatPageSerializer,ContactsSerializer,CourseSerializer,FAQSerializer,StudyMaterialSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuizQuestionSerializer,AssignQuizCourseSerializer,CourseQuizSerializer,AttemptQuizSerializer
 from . import models
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
@@ -501,3 +501,8 @@ class FlatPagesList(generics.ListAPIView):
 class FlatPagesDetail(generics.RetrieveAPIView):
     queryset = FlatPage.objects.all()
     serializer_class = FlatPageSerializer
+
+# contact
+class ContactList(generics.ListCreateAPIView):
+    queryset=models.Contacts.objects.all()
+    serializer_class=ContactsSerializer

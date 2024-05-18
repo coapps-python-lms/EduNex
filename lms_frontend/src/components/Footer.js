@@ -20,11 +20,12 @@ function Footer() {
       <li className ="nav-item"><Link to="/" className ="nav-link px-2 text-body-secondary">Home</Link></li>
       <li className ="nav-item"><Link to="/faq" className ="nav-link px-2 text-body-secondary">FAQs</Link></li>
       {pagesData&&pagesData.map((row,index)=>
-      <>
-      <li className ="nav-item"><Link to={`/page/${row.id}${row.url}`} className ="nav-link px-2 text-body-secondary">{row.title}</Link></li>
+        <>
+          <li className ="nav-item"><Link to={`/page/${row.id}${row.url}`} className ="nav-link px-2 text-body-secondary">{row.title}</Link></li>
+        </>
+       )}
+      <li className ="nav-item"><Link to="/contact-us" className ="nav-link px-2 text-body-secondary">Contact Us</Link></li>
 
-  </>
-  )}
 
   </ul>
     <p className ="text-center text-body-secondary">© 2024 EduNex</p>

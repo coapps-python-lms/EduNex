@@ -56,6 +56,7 @@ import AttemptedStudents from "./Teacher/AttemptedStudents";
 import Category from "./Category";
 import FAQ from "./FAQ";
 import Page from "./Page";
+import ContactUs from "./ContactUs"
 
 function Main() {
   return (
@@ -114,6 +115,7 @@ function Main() {
         <Route path='/attempted-students/:quiz_id' element={<AttemptedStudents/>}></Route>
         <Route path='/category' element={<Category/>}></Route>
         <Route path="/faq" element={<FAQ/>}></Route>
+        <Route path="/contact-us" element={<ContactUs/>}></Route>
       </Switch>
       <Footer />
     </div>
