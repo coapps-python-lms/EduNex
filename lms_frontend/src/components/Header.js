@@ -49,6 +49,9 @@ function Header() {
             <Link className="nav-link" to="/all-courses">
               Courses
             </Link>
+            <Link className="nav-link" to="/category">
+              Categories
+            </Link>
             <li className = "nav-item dropdown">
           <Link className = "nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Teacher

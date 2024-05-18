@@ -54,6 +54,7 @@ import AddStudyMaterial from "./Teacher/AddStudyMaterial";
 import EditStudyMaterial from "./Teacher/EditStudyMaterial";
 import UserStudyMaterials from "./User/UserStudyMaterial";
 import AttemptedStudents from "./Teacher/AttemptedStudents";
+import Category from "./Category";
 
 function Main() {
   return (
@@ -90,7 +91,7 @@ function Main() {
         <Route path="/edit-chapter/:chapter_id" element={<EditChapter/>}></Route>
         <Route path="/popular-courses" element={<PopularCourses/>}></Route>
         <Route path="/popular-teachers" element={<PopularTeachers/>}></Route>
-        <Route path="/category/:category_slug" element={<CategoryCourses/>}></Route>
+        <Route path="/course/:category_id/:category_slug" element={<CategoryCourses/>}></Route>
         <Route path="/teacher-skill-courses/:skill_name/:teacher_id" element={<TeacherSkillCourses/>}></Route>
         <Route path="/add-assignment/:teacher_id/:student_id" element={<AddAssignment/>}></Route>
         <Route path="/show-assignment/:teacher_id/:student_id" element={<ShowAssignment/>}></Route>
@@ -110,6 +111,7 @@ function Main() {
         <Route path='/edit-study/:study_id' element={<EditStudyMaterial/>}></Route>
         <Route path='/user-study-material/:course_id' element={<UserStudyMaterials/>}></Route>
         <Route path='/attempted-students/:quiz_id' element={<AttemptedStudents/>}></Route>
+        <Route path='/category' element={<Category/>}></Route>
       </Switch>
       <Footer />
     </div>

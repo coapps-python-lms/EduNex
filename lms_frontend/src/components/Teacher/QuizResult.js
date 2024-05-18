@@ -35,7 +35,7 @@ function QuizResult(props){
               ></button>
             </div>
             <div className="modal-body">
-              <table className="table table-bordered">
+              <table className="table">
                 <tr>
                   <th>Total Questions</th>
                   <td>{resultData.total_questions}</td>
@@ -43,6 +43,10 @@ function QuizResult(props){
                 <tr>
                   <th>Attempted Questions</th>
                   <td>{resultData.total_attempted_questions}</td>
+                </tr>
+                <tr>
+                  <th>Correct Questions</th>
+                  <td>{resultData.total_correct_questions}</td>
                 </tr>
               </table>
             </div>

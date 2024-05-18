@@ -38,7 +38,7 @@ function Dashboard() {
               <div className="card border-success">
                 <h5 className="card-header bg-success text-white">Favorites Courses</h5>
                 <div className="card-body">
-                  <h2><Link to="/favorite-course">{dashboardData.total_favorite_courses}</Link></h2>
+                  <h2><Link to="/favorite-courses">{dashboardData.total_favorite_courses}</Link></h2>
                 </div>
               </div>
             </div>

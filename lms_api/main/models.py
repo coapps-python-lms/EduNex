@@ -40,12 +40,15 @@ class CourseCategory(models.Model):
     description = models.TextField()
     class Meta:
         verbose_name_plural= "2. Course Categories"
+    # total courses
+    def total_courses(self):
+        return Course.objects.filter(category=self).count()
     def __str__(self):
         return self.title
 
 # course model
 class Course(models.Model):
-    category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,related_name='category_courses')
     teacher= models.ForeignKey(Teacher, on_delete=models.CASCADE,related_name='teacher_courses')
     title = models.CharField(max_length=100)
     description = models.TextField(null=True)
@@ -240,3 +243,12 @@ class StudyMaterial(models.Model):
     remarks = models.TextField(null=True)
     class Meta:
         verbose_name_plural= "15. Course Study Material"
+# FAQ
+class FAQ(models.Model):
+    question = models.CharField(max_length=300)
+    answer = models.TextField(null=True)
+    class Meta:
+        verbose_name_plural= "16. FAQ"
+    def __str__(self) -> str:
+        return self.question
+

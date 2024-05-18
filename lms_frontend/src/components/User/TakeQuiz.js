@@ -20,7 +20,7 @@ function TakeQuiz(){
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [quiz_id]);
 
   useEffect(() => {
     document.title = "Take Quiz";

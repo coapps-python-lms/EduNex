@@ -7,7 +7,7 @@ function CheckQuizStatusForStudent(props){
     const[quizData,setQuizData]=useState([])
     useEffect(()=>{
         try {
-            axios.get(`${baseUrl}/fetch-quiz-attempt-status/${props.quiz}/${props.student}`)
+            axios.get(`${baseUrl}/fetch-student-quiz-attempt-status/${props.quiz}/${props.student}`)
             .then((res)=>{
                 setQuizData(res.data)
             })

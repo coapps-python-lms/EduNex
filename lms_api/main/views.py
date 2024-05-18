@@ -14,6 +14,12 @@ from django.db.models import Q
 from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,StudyMaterialSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuizQuestionSerializer,AssignQuizCourseSerializer,CourseQuizSerializer,AttemptQuizSerializer
 from . import models
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
+
+class StandardResultsPagination(PageNumberPagination):
+    page_size=8
+    page_size_query_param='page_size'
+    max_page_size=8
 
 class TeacherList(generics.ListCreateAPIView):
     queryset = models.Teacher.objects.all()
@@ -56,11 +62,12 @@ class CategoryList(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     # permission_classes=[permissions.IsAuthenticated]
 
+
 # course
 class CourseList(generics.ListCreateAPIView):
     queryset = models.Course.objects.all()
     serializer_class = CourseSerializer
-    # permission_classes=[permissions.IsAuthenticated] 
+    pagination_class= StandardResultsPagination
     
     def get_queryset(self):
             qs=super().get_queryset()
@@ -69,7 +76,8 @@ class CourseList(generics.ListCreateAPIView):
                 qs=models.Course.objects.all().order_by('-id')[:limit]
             if 'category' in self.request.GET:
                 category=self.request.GET['category']
-                qs=models.Course.objects.filter(techs__icontains=category)
+                category=models.CourseCategory.objects.filter(id=category).first()
+                qs=models.Course.objects.filter(category=category)
             if 'skill_name' in self.request.GET and 'teacher' in self.request.GET:
                 skill_name=self.request.GET['skill_name']
                 teacher=self.request.GET['teacher']
@@ -386,12 +394,17 @@ class QuizDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Quiz.objects.all()
     serializer_class = QuizSerializer
 # quiz question
+# class QuizQuestionDetail(generics.RetrieveUpdateAPIView):
+#     queryset = models.QuizQuestions.objects.all()
+#     serializer_class = QuizQuestionSerializer
+#     .lookup_field = 'id'
 class QuizQuestionList(generics.ListCreateAPIView):
     serializer_class = QuizQuestionSerializer
    
     def get_queryset(self):
         quiz_id = self.kwargs['quiz_id']
         quiz=models.Quiz.objects.get(pk=quiz_id)
+        print(quiz)
         if 'limit' in self.kwargs:
           return models.QuizQuestions.objects.filter(quiz=quiz).order_by('id')[:1]
         elif 'question_id' in self.kwargs:
@@ -434,7 +447,7 @@ class AttemptQuizList(generics.ListCreateAPIView):
             quiz=models.Quiz.objects.get(pk=quiz_id)
             return models.AttemptQuiz.objects.filter(quiz=quiz)
 
-def fetch_quiz_attempt_status(request,quiz_id,student_id):
+def fetch_student_quiz_attempt_status(request,quiz_id,student_id):
     quiz=models.Quiz.objects.filter(id=quiz_id).first()
     student=models.Student.objects.filter(id=student_id).first()
     attemptStatus=models.AttemptQuiz.objects.filter(student=student,question__quiz=quiz).count()
@@ -449,7 +462,13 @@ def fetch_quiz_attempt_status(request,quiz_id,student_id):
     student=models.Student.objects.filter(id=student_id).first()
     total_questions=models.QuizQuestions.objects.filter(quiz=quiz).count()
     total_attempted_questions=models.AttemptQuiz.objects.filter(student=student,quiz=quiz).values('student').count()
-    return JsonResponse({'total_questions':total_questions,'total_attempted_questions':total_attempted_questions})
+    attempted_questions=models.AttemptQuiz.objects.filter(quiz=quiz,student=student)
+    total_correct_questions=0
+    for attempt in attempted_questions:
+        if attempt.right_ans==attempt.question.righ_ans:
+            total_correct_questions+=1
+    return JsonResponse({'total_questions':total_questions,'total_attempted_questions':total_attempted_questions,"total_correct_questions":total_correct_questions})
+
 # study material
 class StudyMaterialList(generics.ListCreateAPIView):
     serializer_class = StudyMaterialSerializer

@@ -61,7 +61,7 @@ urlpatterns=[
     path('quiz-questions/<int:quiz_id>/<int:limit>',views.QuizQuestionList.as_view()),
     path('attempt-quiz/',views.AttemptQuizList.as_view()),
     path('quiz-questions/<int:quiz_id>/next-question/<int:question_id>',views.QuizQuestionList.as_view()),
-    path('fetch-quiz-attempt-status/<int:quiz_id>/<int:student_id>',views.fetch_quiz_attempt_status),
+    path('fetch-student-quiz-attempt-status/<int:quiz_id>/<int:student_id>',views.fetch_student_quiz_attempt_status),
     # study material
     path('study-materials/<int:course_id>',views.StudyMaterialList.as_view()),
     path('study-material/<int:pk>',views.StudyMaterialDetail.as_view()),

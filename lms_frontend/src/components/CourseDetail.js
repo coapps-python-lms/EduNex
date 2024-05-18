@@ -239,7 +239,7 @@ function CourseDetail() {
           <p className="fw-bold">Technologies:&nbsp; 
           {techListData.map((tech, index) => (
             <>
-            <Link to={`/category/${tech.trim()}`} className="badge badge-pill text-dark bg-warning ms-2">{tech.trim()}</Link>&nbsp;
+            <Link to={`/course/${tech.trim()}`} className="badge badge-pill text-dark bg-warning ms-2">{tech.trim()}</Link>&nbsp;
             </>
   
           ))}
