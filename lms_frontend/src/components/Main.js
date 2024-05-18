@@ -55,6 +55,7 @@ import EditStudyMaterial from "./Teacher/EditStudyMaterial";
 import UserStudyMaterials from "./User/UserStudyMaterial";
 import AttemptedStudents from "./Teacher/AttemptedStudents";
 import Category from "./Category";
+import FAQ from "./FAQ";
 
 function Main() {
   return (
@@ -112,6 +113,7 @@ function Main() {
         <Route path='/user-study-material/:course_id' element={<UserStudyMaterials/>}></Route>
         <Route path='/attempted-students/:quiz_id' element={<AttemptedStudents/>}></Route>
         <Route path='/category' element={<Category/>}></Route>
+        <Route path="/faq" element={<FAQ/>}></Route>
       </Switch>
       <Footer />
     </div>

@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Q
 # from rest_framework import permissions
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,StudyMaterialSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuizQuestionSerializer,AssignQuizCourseSerializer,CourseQuizSerializer,AttemptQuizSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,FAQSerializer,StudyMaterialSerializer,ChapterSerializer,StudentSerializer,StudentEnrolledCourseSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuizQuestionSerializer,AssignQuizCourseSerializer,CourseQuizSerializer,AttemptQuizSerializer
 from . import models
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
@@ -486,3 +486,8 @@ def update_view(request,course_id):
     queryset.course_views+=1
     queryset.save()
     return JsonResponse({'views':queryset.course_views})
+
+# faq
+class FAQList(generics.ListAPIView):
+    queryset = models.FAQ.objects.all()
+    serializer_class = FAQSerializer

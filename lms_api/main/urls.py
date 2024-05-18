@@ -72,4 +72,6 @@ urlpatterns=[
     path('update-view/<int:course_id>',views.update_view),
     path('popular-teachers/',views.TeacherList.as_view()),
     path('student-testimonial/',views.CourseRatingList.as_view()),
+    # footer
+    path('faq/',views.FAQList.as_view()),
 ]
