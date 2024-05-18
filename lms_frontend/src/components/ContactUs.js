@@ -43,8 +43,11 @@ function ContactUs() {
       setContactData({ ...contactData, status: "error" });
     }
   };
-  
 
+  const listStyle={
+    'list-sytle':'none',
+
+  }
   return (
     <div className="container mt-4">
       <div className="row">
@@ -107,7 +110,9 @@ function ContactUs() {
               </form>
             </div>
           </div>
+         
         </div>
+       
       </div>
     </div>
   );

@@ -11,6 +11,8 @@ class Teacher(models.Model):
     mobile_no = models.CharField(max_length=20)
     profile_picture = models.ImageField(upload_to='teacher_profile_imgs/',null=True)
     skills= models.TextField()
+    verify_status=models.BooleanField(default=False)
+    otp_digit=models.CharField(max_length=10,null=True)
     
     class Meta:
         verbose_name_plural= "1. Teachers"
@@ -32,7 +34,8 @@ class Teacher(models.Model):
     def total_teacher_students(self):
         total_teacher_students=StudentCourseEnrollement.objects.filter(course__teacher=self).count()
         return total_teacher_students
-    
+   
+
 
 
 #  courseCategory model
@@ -115,6 +118,8 @@ class Student(models.Model):
     password = models.CharField(max_length=100,blank=True,null=True)
     interested_categories= models.TextField()
     profile_picture = models.ImageField(upload_to='student_profile_imgs/',null=True)
+    verify_status=models.BooleanField(default=False)
+    otp_digit=models.CharField(max_length=10,null=True)
     def __str__(self):
         return self.full_name
     class Meta:

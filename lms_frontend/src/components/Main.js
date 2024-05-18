@@ -57,6 +57,7 @@ import Category from "./Category";
 import FAQ from "./FAQ";
 import Page from "./Page";
 import ContactUs from "./ContactUs"
+import VerifyTeacher from "./Teacher/VerifyTeacher";
 
 function Main() {
   return (
@@ -116,6 +117,7 @@ function Main() {
         <Route path='/category' element={<Category/>}></Route>
         <Route path="/faq" element={<FAQ/>}></Route>
         <Route path="/contact-us" element={<ContactUs/>}></Route>
+        <Route path='/verify-teacher/:teacher_id' element={<VerifyTeacher/>}></Route>
       </Switch>
       <Footer />
     </div>

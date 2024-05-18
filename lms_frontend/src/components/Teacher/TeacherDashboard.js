@@ -18,7 +18,7 @@ function TeacherDashboard() {
     } catch (error) {
       console.log(error)
     }
-  })
+  },[teacherId])
   return (
     <div className="container mt-4">
       <div className="row">

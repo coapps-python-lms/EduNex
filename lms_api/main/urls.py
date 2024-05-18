@@ -79,4 +79,6 @@ urlpatterns=[
     path('pages/<int:pk>/<str:page_slug>/',views.FlatPagesDetail.as_view()),
     # contact
     path('contact/',views.ContactList.as_view()),
+    # otp verify
+    path('verify-teacher/<int:teacher_id>/', views.verify_teacher_via_otp),
 ]

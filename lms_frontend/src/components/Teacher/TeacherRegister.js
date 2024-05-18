@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const baseUrl = "http://127.0.0.1:8000/api/teacher/";
 
 function TeacherRegister() {
+  const navigate=useNavigate()
   useEffect(() => {
     document.title = "Teacher Register";
   });
@@ -17,6 +18,7 @@ function TeacherRegister() {
     mobile_no: "",
     skills: "",
     status: "",
+    otp_digit:''
   });
 
   const handleChange = (event) => {
@@ -27,6 +29,7 @@ function TeacherRegister() {
   };
 
   const submitForm = async () => {
+    const otp_digit=Math.floor(100000 +Math.random()*900000)
     const teacherFormData = new FormData();
     teacherFormData.append("full_name", teacherData.full_name);
     teacherFormData.append("email", teacherData.email);
@@ -34,29 +37,31 @@ function TeacherRegister() {
     teacherFormData.append("qualification", teacherData.qualification);
     teacherFormData.append("mobile_no", teacherData.mobile_no);
     teacherFormData.append("skills", teacherData.skills);
+    teacherFormData.append("otp_digit", otp_digit);
 
     try {
-      const response = await axios.post(baseUrl, teacherFormData);
-      setTeacherData({
-        full_name: "",
-        email: "",
-        password: "",
-        qualification: "",
-        mobile_no: "",
-        skills: "",
-        status: "success",
-      });
+      await axios.post(baseUrl, teacherFormData)
+      .then((response)=>{
+        navigate('/verify-teacher/'+response.data.id)
+                //  window.location.href='/verify-teacher/'+response.data.id
+       
+      // setTeacherData({
+      //   full_name: "",
+      //   email: "",
+      //   password: "",
+      //   qualification: "",
+      //   mobile_no: "",
+      //   skills: "",
+      //   status: "success",
+      // });
       console.log(response.data);
+    })
     } catch (error) {
       console.log(error);
       setTeacherData({ ...teacherData, status: "error" });
     }
   };
-  const teacherLoginStatus = localStorage.getItem("teacherLoginStatus");
-  if (teacherLoginStatus === true) {
-    window.location.href = "/teacher-dashboard";
-  }
-
+  
   return (
     <div className="container mt-4">
       <div className="row">

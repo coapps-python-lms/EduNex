@@ -1,16 +1,17 @@
-import { Link } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:8000/api";
 
-function TeacherLogin() {
-  const [teacherLoginData, setteacherLoginData] = useState({
-    email: "",
-    password: "",
+function VerifyTeacher() {
+    const navigate=useNavigate()
+    const {teacher_id}=useParams()
+  const [teacherData, setteacherData] = useState({
+    otp_digit: "",
   });
   const handleChange = (event) => {
-    setteacherLoginData({
-      ...teacherLoginData,
+    setteacherData({
+      ...teacherData,
       [event.target.name]: event.target.value,
     });
   };
@@ -18,15 +19,15 @@ function TeacherLogin() {
 
   const submitForm = () => {
     const teacherFormData = new FormData();
-    teacherFormData.append("email", teacherLoginData.email);
-    teacherFormData.append("password", teacherLoginData.password);
+    teacherFormData.append("otp_digit", teacherData.otp_digit);
     try {
-      axios.post(baseUrl + "/teacher-login", teacherFormData).then((res) => {
+      axios.post(baseUrl + "/verify-teacher/"+teacher_id+'/', teacherFormData).then((res) => {
         if (res.data.bool === true) {
           localStorage.setItem("teacherLoginStatus", true);
           localStorage.setItem("teacherId", res.data.teacher_id);
           console.log(res.data.teacher_id);
-          window.location.href = "/teacher-dashboard";
+          navigate("/teacher-dashboard")
+        //   window.location.href = "/teacher-dashboard";
         } else {
           setErrorMsg(res.data.msg);
         }
@@ -42,54 +43,37 @@ function TeacherLogin() {
   }
 
   useEffect(() => {
-    document.title = "Teacher Login";
+    document.title = "Teacher Verification";
   });
   return (
     <div className="container mt-4">
       <div className="row">
         <div className="col-6 offset-3">
           <div className="card">
-            <h5 className="card-header">Teacher Login</h5>
+            <h5 className="card-header">Enter 6 Digit OTP</h5>
             <div className="card-body">
               {errorMsg && <p className="text-danger">{errorMsg}</p>}
-              <form>
                 <div className="mb-3">
                   <label htmlFor="exampleInputEmail1" className="form-label">
-                    Email
+                    OTP
                   </label>
                   <input
-                    type="email"
-                    value={teacherLoginData.email}
-                    name="email"
+                    type="number"
+                    value={teacherData.otp_digit}
+                    name="otp_digit"
                     onChange={handleChange}
                     className="form-control"
                   />
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="exampleInputPassword1" className="form-label">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    value={teacherLoginData.password}
-                    name="password"
-                    onChange={handleChange}
-                    className="form-control"
-                    id="exampleInputPassword1"
-                  />
-                </div>
-                {/* <div className="mb-3 form-check">
-                                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                    <label className="form-check-label" for="exampleCheck1">Remember me</label>
-                                </div> */}
+               
                 <button
                   type="submit"
                   onClick={submitForm}
                   className="btn btn-primary"
                 >
-                  Login
+                  Verify
                 </button>
-              </form>
+
             </div>
           </div>
         </div>
@@ -98,4 +82,4 @@ function TeacherLogin() {
   );
 }
 
-export default TeacherLogin;
+export default VerifyTeacher;
