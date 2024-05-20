@@ -58,6 +58,7 @@ import FAQ from "./FAQ";
 import Page from "./Page";
 import ContactUs from "./ContactUs"
 import VerifyTeacher from "./Teacher/VerifyTeacher";
+import VerifyStudent from "./User/VerifyStudent";
 
 function Main() {
   return (
@@ -118,6 +119,7 @@ function Main() {
         <Route path="/faq" element={<FAQ/>}></Route>
         <Route path="/contact-us" element={<ContactUs/>}></Route>
         <Route path='/verify-teacher/:teacher_id' element={<VerifyTeacher/>}></Route>
+        <Route path='/verify-student/:student_id' element={<VerifyStudent/>}></Route>
       </Switch>
       <Footer />
     </div>

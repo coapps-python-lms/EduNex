@@ -150,4 +150,14 @@ CORS_ALLOW_ALL_ORIGINS=True
 MEDIA_URL='/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# settings.py
+
+# Email backend configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Your SMTP server
+EMAIL_PORT = 587  # Port for email submission
+EMAIL_USE_TLS = True  # Use TLS for encryption
+EMAIL_HOST_USER = 'subashininatarajan1804@gmail.com'  # Your email address
+EMAIL_HOST_PASSWORD = 'kbgn jjcx xkpa lfdh'  # Your email password
+DEFAULT_FROM_EMAIL = 'subashininatarajan1804@gmail.com'  # Default 'from' email address

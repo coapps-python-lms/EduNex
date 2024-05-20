@@ -17,7 +17,7 @@ function Dashboard() {
     } catch (error) {
       console.log(error)
     }
-  })
+  },[studentId])
   return (
     <div className="container mt-4">
       <div className="row">

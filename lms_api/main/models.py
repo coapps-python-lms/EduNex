@@ -13,7 +13,7 @@ class Teacher(models.Model):
     skills= models.TextField()
     verify_status=models.BooleanField(default=False)
     otp_digit=models.CharField(max_length=10,null=True)
-    
+    login_via_otp=models.BooleanField(default=False)
     class Meta:
         verbose_name_plural= "1. Teachers"
     def skill_list(self):
@@ -120,6 +120,7 @@ class Student(models.Model):
     profile_picture = models.ImageField(upload_to='student_profile_imgs/',null=True)
     verify_status=models.BooleanField(default=False)
     otp_digit=models.CharField(max_length=10,null=True)
+    login_via_otp=models.BooleanField(default=False)
     def __str__(self):
         return self.full_name
     class Meta:
@@ -281,3 +282,12 @@ class Contacts(models.Model):
     def __str__(self) -> str:
         return self.query_txt
 
+# chat
+class TeacherStudentChat(models.Model):
+    teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE,null=True)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
+    msg_text=models.TextField()
+    msg_from=models.CharField(max_length=100)
+    msg_time=models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural= "18. Teacher Student Messages"

@@ -188,14 +188,27 @@ def student_login(request):
         password = request.POST.get('password')
         
         try:
-            studentData = models.Student.objects.get(email=email, password=password)
-            return JsonResponse({'bool': True,'student_id':studentData.id})
-        except ObjectDoesNotExist:
-            return JsonResponse({'bool': False, 'error': 'Student not found with the provided credentials'})
-        except models.Student.MultipleObjectsReturned:
-            return JsonResponse({'bool': False, 'error': 'Multiple teachers found with the provided credentials'})
+            studentData = models.Student.objects.get(email=email, password=password)   
+        except models.Student.DoesNotExist:
+            studentData=None
+        if studentData:
+            if not studentData.verify_status:
+                return JsonResponse({'bool':False,'msg':'Account not verified!'})
+            else:
+                return JsonResponse({'bool':True,'student_id':studentData.id})
+        else:
+            return JsonResponse({'bool':False,'msg':'Invalid Email or Password'})
+            
+
+@csrf_exempt 
+def verify_student_via_otp(request,student_id):
+    otp_digit= request.POST.get('otp_digit')
+    verify=models.Student.objects.filter(id=student_id,otp_digit=otp_digit).first()
+    if verify:
+        models.Student.objects.filter(id=student_id,otp_digit=otp_digit).update(verify_status=True)
+        return JsonResponse({'bool':True,'student_id':verify.id})
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed for student login'})
+        return JsonResponse({'bool':False}) 
 
 # student enrolled course
 class StudentEnrollCourseList(generics.ListCreateAPIView):

@@ -81,4 +81,5 @@ urlpatterns=[
     path('contact/',views.ContactList.as_view()),
     # otp verify
     path('verify-teacher/<int:teacher_id>/', views.verify_teacher_via_otp),
+    path('verify-student/<int:student_id>/', views.verify_student_via_otp),
 ]

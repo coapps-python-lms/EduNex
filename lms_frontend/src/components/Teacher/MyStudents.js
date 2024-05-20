@@ -56,6 +56,7 @@ function MyStudents() {
                       <td>
                         <Link to={`/show-assignment/${teacherId}/${row.student.id}`} className="btn btn-sm btn-warning">Assignments</Link>
                         <Link to={`/add-assignment/${teacherId}/${row.student.id}`} className="btn btn-sm btn-success ms-2">Add Assignment</Link>
+                        <button className="btn btn-sm btn-primary ms-2" title='send message'><i class="bi bi-chat-fill"></i></button>
                       </td>
                     </tr>
                   ))}

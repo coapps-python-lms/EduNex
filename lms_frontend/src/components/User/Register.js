@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const baseUrl = "http://127.0.0.1:8000/api/student/";
 function Register() {
+  const navigate=useNavigate()
   useEffect(() => {
     document.title = "Student Register";
   });
@@ -15,6 +16,7 @@ function Register() {
     password: "",
     interested_categories: "",
     status: "",
+    otp_digit:''
   });
   const handleChange = (event) => {
     setStudentData({
@@ -23,6 +25,7 @@ function Register() {
     });
   };
   const submitForm = async () => {
+    const otp_digit=Math.floor(100000 +Math.random()*900000)
     const studentFormData = new FormData();
     studentFormData.append("full_name", studentData.full_name);
     studentFormData.append("email", studentData.email);
@@ -32,27 +35,28 @@ function Register() {
       "interested_categories",
       studentData.interested_categories
     );
+    studentFormData.append("otp_digit", otp_digit);
 
     try {
-      const response = await axios.post(baseUrl, studentFormData);
-      setStudentData({
-        full_name: "",
-        email: "",
-        username: "",
-        password: "",
-        interested_categories: "",
-        status: "success",
-      });
+     await axios.post(baseUrl, studentFormData)
+     .then((response)=>{
+      navigate('/verify-student/'+response.data.id)
       console.log(response.data);
+     })
+      // setStudentData({
+      //   full_name: "",
+      //   email: "",
+      //   username: "",
+      //   password: "",
+      //   interested_categories: "",
+      //   status: "success",
+      // });
+
     } catch (error) {
       console.log(error);
       setStudentData({ ...studentData, status: "error" });
     }
   };
-  const studentLoginStatus = localStorage.getItem("studentLoginStatus");
-  if (studentLoginStatus === true) {
-    window.location.href = "/student-dashboard";
-  }
 
   return (
     <div className="container mt-4">
@@ -130,7 +134,7 @@ function Register() {
                   Php, Python, Javascript etc..
                 </div>
               </div>
-
+                       
               <button
                 type="submit"
                 onClick={submitForm}

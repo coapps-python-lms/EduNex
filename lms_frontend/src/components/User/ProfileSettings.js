@@ -15,6 +15,7 @@ function ProfileSettings() {
     prev_profile_picture: "",
     profile_picture: "",
     status: "",
+    login_via_otp:''
   });
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -42,6 +43,7 @@ function ProfileSettings() {
           interested_categories: res.data.interested_categories,
           prev_profile_picture: res.data.profile_picture,
           profile_picture: "",
+          login_via_otp:res.data.login_via_otp
         });
       });
     } catch (error) {
@@ -54,6 +56,7 @@ function ProfileSettings() {
     teacherFormData.append("full_name", studentData.full_name);
     teacherFormData.append("email", studentData.email);
     teacherFormData.append("username", studentData.username);
+    teacherFormData.append("login_via_otp", studentData.login_via_otp);
     teacherFormData.append(
       "interested_categories",
       studentData.interested_categories
@@ -201,6 +204,23 @@ function ProfileSettings() {
                     name="interested_categories"
                     className="form-control"
                   ></textarea>
+                </div>
+              </div>
+              <div className="mb-3 row">
+                <label
+                  htmlFor="inputFullname"
+                  className="col-sm-2 col-form-label"
+                >
+                  Login Via OTP
+                </label>
+                <div className="col-sm-10">
+                  <input
+                    value={studentData.login_via_otp}
+                    onChange={handleChange}
+                    type="text"
+                    name="login_via_otp"
+                    className="form-control"
+                  />
                 </div>
               </div>
               <div>

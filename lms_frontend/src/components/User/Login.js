@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:8000/api";
 
 function Login() {
+  const navigate=useNavigate()
   const [studentLoginData, setStudentLoginData] = useState({
     email: "",
     password: "",
@@ -22,12 +23,16 @@ function Login() {
     try {
       axios.post(baseUrl + "/student-login", studentFormData).then((res) => {
         if (res.data.bool === true) {
+          if (res.data.login_via_otp === true) {
+            navigate('/verify-student/'+res.data.student_id)
+          }
+          else{
           localStorage.setItem("studentLoginStatus", true);
           localStorage.setItem("studentId", res.data.student_id);
-          console.log(res.data.teacher_id);
-          window.location.href = "/student-dashboard";
-        } else {
-          setErrorMsg("Invalid Email or Password!!");
+          navigate( "/student-dashboard")
+          } 
+        } else { 
+          setErrorMsg(res.data.msg);
         }
       });
     } catch (error) {
