@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE':'django.db.backends.mysql',
         'NAME':'django_lms_1',
         'USER':'root',
-        'PASSWORD':'$Suba07072002',
+        'PASSWORD':'',
         'HOST':'localhost',
         'PORT':'3306',
     }
@@ -158,6 +158,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # Your SMTP server
 EMAIL_PORT = 587  # Port for email submission
 EMAIL_USE_TLS = True  # Use TLS for encryption
-EMAIL_HOST_USER = 'subashininatarajan1804@gmail.com'  # Your email address
-EMAIL_HOST_PASSWORD = 'kbgn jjcx xkpa lfdh'  # Your email password
-DEFAULT_FROM_EMAIL = 'subashininatarajan1804@gmail.com'  # Default 'from' email address
+EMAIL_HOST_USER =# Your email address
+EMAIL_HOST_PASSWORD = # Your email password
+DEFAULT_FROM_EMAIL = # Default 'from' email address
